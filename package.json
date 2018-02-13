@@ -1,0 +1,15 @@
+{
+  "name": "webpack-addons-pwa",
+  "version": "1.0.0",
+  "main": "generator.js",
+  "author": "Sendil Kumar",
+  "license": "MIT",
+  "dependencies": {
+    "webpack-addons": "^1.1.5",
+    "yeoman-generator": "^2.0.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.16.0"
+  }
+}
