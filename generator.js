@@ -1,5 +1,6 @@
 const Generator = require('yeoman-generator');
-const List = require('webpack-addons').List;
+const Confirm = require('webpack-addons').Confirm;
+const Input = require('webpack-addons').Input;
 const createDevConfig = require('./dev-config');
 
 module.exports = class WebpackGenerator extends Generator {
@@ -13,15 +14,37 @@ module.exports = class WebpackGenerator extends Generator {
 	}
 
 	prompting() {
-		return this.prompt([
-			List('serviceWorker', 'Do you want to add Service Worker?', ['Yes', 'No'])
-		]).then (answer => {
-			if(answer['serviceWorker'] === 'Yes') {
-				this.options.env.configuration.dev.webpackOptions = createDevConfig(answer);
-				this.options.env.configuration.dev.topScope = [
-					'const WorkboxPlugin = require("workbox-webpack-plugin");'
-				];
-			}
-		});
+		let done = this.async();
+
+		let serviceWorker = false;
+		let favPath;
+
+		this.options.env.configuration.dev.topScope = [];
+
+		return this.prompt([Confirm('serviceWorker', 'Do you want to add Service Worker?')])
+				.then (answer => {
+					serviceWorker = answer['serviceWorker'];
+					if(serviceWorker) {
+						this.options.env.configuration.dev.topScope.push(
+							'const WorkboxPlugin = require("workbox-webpack-plugin");'
+						);
+					}
+
+					return this.prompt([Confirm('favicon', 'Do you want to add Favicon?')])
+							.then (answer => {
+								if(answer['favicon']) {
+									// TODO: Add the default value here
+									return this.prompt([Input('favPath', 'Enter your fav icon path :')]).then(answer => {
+										this.options.env.configuration.dev.topScope.push('const FaviconsWebpackPlugin = require("favicons-webpack-plugin");');
+										favPath =answer['favPath'];
+										this.options.env.configuration.dev.webpackOptions = createDevConfig(serviceWorker, favPath);
+										done();
+									});
+								} else {
+									this.options.env.configuration.dev.webpackOptions = createDevConfig(serviceWorker, favPath);
+									done();
+								}
+					});
+				});
 	}
 };
