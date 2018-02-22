@@ -1,5 +1,27 @@
-import test from 'ava';
+const test = require('ava');
+const createDevConfig = require('./dev-config');
 
-test('arrays are equal', t => {
-	t.deepEqual([1, 2], [1, 2]);
+const favPath = "test.js";
+const swExpected = "new WorkboxPlugin({clientsClaim: true,skipWaiting: true})";
+const fpExpected = "new FaviconsWebpackPlugin('"+ favPath +"')";
+
+test('create dev config to return when serviceworker is true', t => {
+	const plugins = createDevConfig(true).plugins;
+	t.is(plugins.length, 1);
+	t.is(plugins[0], swExpected);
+});
+
+test('create dev config to return when only favpath is defined', t => {
+	const plugins = createDevConfig(false, favPath).plugins;
+	t.is(plugins.length, 1);
+	t.is(plugins[0], fpExpected);
+});
+
+test('create dev config to return empty when both are empty', t => t.is(createDevConfig().plugins.length, 0));
+
+test('create dev config to return empty when both are sent', t => {
+	const plugins = createDevConfig(true, favPath).plugins;
+	t.is(plugins.length, 2);
+	t.is(plugins[0], swExpected);
+	t.is(plugins[1], fpExpected);
 });

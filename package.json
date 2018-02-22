@@ -5,13 +5,15 @@
   "author": "Sendil Kumar",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint *.js"
+    "lint": "eslint *.js",
+    "test": "ava"
   },
   "dependencies": {
     "webpack-addons": "^1.1.5",
     "yeoman-generator": "^2.0.2"
   },
   "devDependencies": {
+    "ava": "^1.0.0-beta.3",
     "babel-eslint": "^8.2.1",
     "eslint": "^4.18.1"
   }
