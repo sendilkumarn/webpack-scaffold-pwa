@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint *.js",
-    "test": "ava"
+    "test": "ava --verbose"
   },
   "dependencies": {
     "webpack-addons": "^1.1.5",
