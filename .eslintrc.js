@@ -208,7 +208,6 @@ module.exports = {
 		"no-with": "error",
 		"nonblock-statement-body-position": "error",
 		"object-curly-newline": "off",
-		"object-curly-spacing": "error",
 		"object-property-newline": "error",
 		"object-shorthand": "error",
 		"one-var": "off",
