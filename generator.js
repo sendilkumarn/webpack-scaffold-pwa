@@ -33,7 +33,7 @@ module.exports = class WebpackGenerator extends Generator {
 				return this.prompt([Confirm('favicon', 'Do you want to add Favicon?')]);
 			})
 			.then(answer => {
-				if (answer['favicon']) {
+				if (answer['favPath']) {
 					// TODO: Add the default value here
 					return this.prompt([Input('favPath', 'Enter your fav icon path :')]);
 				}
