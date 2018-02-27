@@ -33,14 +33,14 @@ module.exports = class WebpackGenerator extends Generator {
 				return this.prompt([Confirm('favicon', 'Do you want to add Favicon?')]);
 			})
 			.then(answer => {
-				if (answer['favPath']) {
+				if (answer['favicon']) {
 					// TODO: Add the default value here
 					return this.prompt([Input('favPath', 'Enter your fav icon path :')]);
 				}
 			})
 			.then(answer => {
 				if (answer) {
-					favPath = answer['favicon'];
+					favPath = answer['favPath'];
 					this.options.env.configuration.dev.topScope.push('const FaviconsWebpackPlugin = require("favicons-webpack-plugin");');
 				}
 				this.options.env.configuration.dev.webpackOptions = createDevConfig(serviceWorker, favPath);
