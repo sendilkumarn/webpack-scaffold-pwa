@@ -2,7 +2,7 @@ const test = require('ava');
 const createDevConfig = require('./dev-config');
 
 const favPath = "test.js";
-const swExpected = "new WorkboxPlugin({clientsClaim: true, skipWaiting: true})";
+const swExpected = "new GenerateSW()";
 const fpExpected = "new FaviconsWebpackPlugin('" + favPath + "')";
 
 test('create dev config to return when serviceworker is true', t => {

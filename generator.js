@@ -26,7 +26,7 @@ module.exports = class WebpackGenerator extends Generator {
 				serviceWorker = answer['serviceWorker'];
 				if (serviceWorker) {
 					this.options.env.configuration.dev.topScope.push(
-						'const WorkboxPlugin = require("workbox-webpack-plugin");'
+						'const { GenerateSW } = require("workbox-webpack-plugin");'
 					);
 				}
 
