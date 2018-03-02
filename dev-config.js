@@ -1,20 +1,33 @@
 const createManifest = require('./create-manifest');
 const fs = require('fs');
+const manifestFile = 'manifest.json';
 
-module.exports = function createDevConfig(serviceWorker, favPath, manifestDetails) {
+let getManifestPath = manifestDetails => {
+	let manifestPath;
+	if (manifestDetails.hasManifest) {
+		manifestPath = manifestDetails.path;
+	} else {
+		let fd = fs.openSync(manifestFile, 'w');
+		fs.writeFileSync(fd, createManifest(manifestDetails));
+		manifestPath = "/" + manifestFile;
+	}
+
+	return manifestPath;
+};
+
+module.exports = function createDevConfig(config) {
 	let plugins = [];
 
-	if (serviceWorker) {
-		plugins.push("new GenerateSW()");
-	}
-
-	if (favPath) {
-		plugins.push("new FaviconsWebpackPlugin('" + favPath + "')");
-	}
-
-	if (Object.keys(manifestDetails).length > 0) {
-		let fd = fs.openSync('manifest.json', 'w');
-		fs.writeFileSync(fd, createManifest(manifestDetails));
+	if (config) {
+		if (config.serviceWorker) {
+			plugins.push("new GenerateSW()");
+		}
+		if (config.favPath) {
+			plugins.push("new FaviconsWebpackPlugin('" + config.favPath + "')");
+		}
+		if (config.manifestDetails) {
+			plugins.push("new CopyWebpackPlugin([{ from: '" + getManifestPath(config.manifestDetails) + "', to: '" + config.outputDir + "'}])");
+		}
 	}
 
 	let devConfig = {
