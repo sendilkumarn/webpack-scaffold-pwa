@@ -9,5 +9,5 @@ module.exports = function createWebappManifest(details) {
         "version": "1.0.0"
     };
 
-    return JSON.stringify(manifestObj);
+    return JSON.stringify(manifestObj, null, '\t');
 };

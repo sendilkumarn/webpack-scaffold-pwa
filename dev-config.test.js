@@ -1,4 +1,5 @@
 const test = require('ava');
+const fs = require('fs');
 const createDevConfig = require('./dev-config');
 
 const favPath = "test.js";
@@ -74,6 +75,7 @@ test('create dev config when serviceWorker, favPath, manifestDetails, outputDir 
 	t.is(plugins[0], swExpected);
 	t.is(plugins[1], fpExpected);
 	t.is(plugins[2], manifestExpected);
+	t.true(fs.existsSync('manifest.json'));
 });
 
 test('create dev config to return empty when config is empty', t => t.is(createDevConfig().plugins.length, 0));
