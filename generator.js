@@ -24,9 +24,24 @@ module.exports = class WebpackGenerator extends Generator {
 		let manifestDetails = {};
 		let outputDir;
 
-		this.options.env.configuration.dev.topScope = [];
+		this.options.env.configuration.dev.topScope = [
+			"const webpack = require('webpack')",
+			"const path = require('path')"
+		];
 
-		return this.prompt([Confirm('serviceWorker', 'Do you want to add Service Worker?')])
+		let entryQuestion = {
+			default: () => "./index.js",
+			message: 'Which file would be the first to enter the application?',
+			name: 'entryFile',
+			type: 'input'
+		};
+
+		return this.prompt(entryQuestion)
+			.then(entryAnswer => {
+				this.options.env.configuration.dev.webpackOptions.entry = entryAnswer['entryFile'];
+
+				return this.prompt([Confirm('serviceWorker', 'Do you want to add Service Worker?')]);
+			})
 			.then(answer => {
 				serviceWorker = answer['serviceWorker'];
 				if (serviceWorker) {
@@ -126,7 +141,7 @@ module.exports = class WebpackGenerator extends Generator {
 				}
 
 				let outputDirQuestion = {
-					default: () => "/build",
+					default: () => '/dist',
 					message: 'Enter the path to directory where you would like to generate builds: ',
 					name: 'outputDir',
 					type: 'input'
@@ -137,6 +152,10 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				if (answer) {
 					outputDir = answer['outputDir'];
+					this.options.env.configuration.dev.webpackOptions.output = {
+						filename: '[name].js',
+						path: `path.resolve(__dirname, '${outputDir}')`
+					};
 				}
 
 				const config = {
@@ -146,7 +165,8 @@ module.exports = class WebpackGenerator extends Generator {
 					serviceWorker
 				};
 
-				this.options.env.configuration.dev.webpackOptions = createDevConfig(config);
+				this.options.env.configuration.dev.webpackOptions.plugins = createDevConfig(config).plugins;
+
 				done();
 			});
 	}
