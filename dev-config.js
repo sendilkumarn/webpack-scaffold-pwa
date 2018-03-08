@@ -1,4 +1,4 @@
-const createManifest = require('./create-manifest');
+const createManifest = require('./utils/create-manifest');
 const fs = require('fs');
 const manifestFile = 'manifest.json';
 
