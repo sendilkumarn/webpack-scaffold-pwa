@@ -15,10 +15,10 @@ module.exports = {
 	scopes: [],
 	types: [
 		{ value: "feat", name: "feat:		A new feature" },
-		{ value: "tests", name: "tests:	Tests, jest, binTestCases, etc" },
+		{ value: "tests", name: "tests:	Tests" },
 		{ value: "docs", name: "docs:		Documentation" },
 		{ value: "misc", name: "misc:		Other formats like tweaks and such" },
-        { value: "chore", name: "chore:	Updating docs, linting, grunt tasks etc" },
+        { value: "chore", name: "chore:	Updating docs, linting etc" },
         { value: "fix", name: "fix:          Bugfix"},
         { value: "refactor", name: "refactor:     Refactored the code"}
 	]
