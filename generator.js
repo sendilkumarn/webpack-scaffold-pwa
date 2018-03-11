@@ -30,7 +30,7 @@ module.exports = class WebpackGenerator extends Generator {
 		];
 
 		let entryQuestion = {
-			default: () => "./index.js",
+			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
 			type: 'input'
@@ -166,7 +166,6 @@ module.exports = class WebpackGenerator extends Generator {
 				};
 
 				this.options.env.configuration.dev.webpackOptions.plugins = createDevConfig(config).plugins;
-
 				done();
 			});
 	}
@@ -175,5 +174,9 @@ module.exports = class WebpackGenerator extends Generator {
 		this.runInstall(getPackageManager(), this.dependencies, {
 			"save-dev": true
 		});
+	}
+
+	writing() {
+		this.config.set("configuration", this.options.env.configuration);
 	}
 };
