@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "cross-spawn": "^6.0.5",
-    "webpack-addons": "^1.1.5",
     "yeoman-generator": "^2.0.2"
   },
   "devDependencies": {
+    "@webpack-cli/webpack-scaffold": "^0.1.0",
     "ava": "^1.0.0-beta.3",
     "babel-eslint": "^8.2.1",
     "eslint": "^4.18.1"
