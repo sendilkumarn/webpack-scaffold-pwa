@@ -99,8 +99,15 @@ module.exports = class WebpackGenerator extends Generator {
 						default: () => "#ffffff",
 						message: 'Please enter the theme color of your application.',
 						name: 'themeColor',
-						type: 'input'
-
+						type: 'input',
+						validate: value => {
+							const pattern = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/i;
+							if(pattern.test(value)) {
+								return true;
+							} else {
+								return "Invalid Hex color code. A valid color looks like #de54ef";
+							}
+						}
 					};
 
 					return this.prompt([nameQuestion, shortNameQuestion, homePageQuestion, themeColorQuestion]);
