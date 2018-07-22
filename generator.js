@@ -136,7 +136,7 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				if (answer) {
 					favPath = answer['favPath'];
-					this.options.env.configuration.dev.topScope.push("const WebappWebpackPlugin = require('webapp-webpack-plugin');");
+					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
 					this.dependencies.push("webapp-webpack-plugin");
 				}
 
