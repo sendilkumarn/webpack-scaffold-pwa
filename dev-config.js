@@ -23,7 +23,7 @@ module.exports = function createDevConfig(config) {
 			plugins.push("new GenerateSW()");
 		}
 		if (config.favPath) {
-			plugins.push("new FaviconsWebpackPlugin('" + config.favPath + "')");
+			plugins.push("new WebappWebpackPlugin('" + config.favPath + "')");
 		}
 		if (config.manifestDetails) {
 			plugins.push("new CopyWebpackPlugin([{ from: '" + getManifestPath(config.manifestDetails) + "', to: '" + config.outputDir + "'}])");
