@@ -33,7 +33,15 @@ module.exports = class WebpackGenerator extends Generator {
 			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
-			type: 'input'
+			type: 'input',
+			validate: value => {
+				const pattern = /[^\s]*.js/i;
+				if(pattern.test(value)) {
+					return true;
+				} else {
+					return "Invalid path or file.";
+				}
+			}
 		};
 
 		return this.prompt(entryQuestion)
@@ -189,7 +197,9 @@ module.exports = class WebpackGenerator extends Generator {
 		this.config.set("configuration", this.options.env.configuration);
 		this.fs.copy(
 			this.templatePath('_index.js'),
-			this.destinationPath('index.js')
+			this.destinationPath(
+				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
+			)
 		);
 	}
 };
