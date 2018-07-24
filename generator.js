@@ -48,8 +48,10 @@ module.exports = class WebpackGenerator extends Generator {
 					this.options.env.configuration.dev.topScope.push(
 						'const { GenerateSW } = require("workbox-webpack-plugin");'
 					);
-
-					this.dependencies.push("workbox-webpack-plugin");
+					this.options.env.configuration.dev.topScope.push(
+						'const HtmlWebpackPlugin = require("html-webpack-plugin");'
+					);
+					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
 				}
 
 				return this.prompt([Confirm('hasManifest', 'Do you have an existing Manifest File?', ['Yes', 'No'])]);
