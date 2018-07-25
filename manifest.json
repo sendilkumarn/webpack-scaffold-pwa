@@ -1,0 +1,9 @@
+{
+	"background_color": "#ffffff",
+	"manifest_version": 2,
+	"name": "test",
+	"short_name": "test",
+	"start_url": "/index.html",
+	"theme_color": "#ffffff",
+	"version": "1.0.0"
+}
