@@ -18,7 +18,7 @@ const outputDir = "/dist";
 const swExpected = "new GenerateSW()";
 const htmlExpected = "new HtmlWebpackPlugin()";
 const fpExpected = "new FaviconsWebpackPlugin('" + favPath + "')";
-const manifestExpected = "new CopyWebpackPlugin([{ from: '/manifest.json', to: '" + outputDir + "'}])";
+const manifestExpected = "new CopyWebpackPlugin([{ from: '/manifest.json', to: ''}])";
 
 test('create dev config to return when serviceworker is true', t => {
 	const config = {
