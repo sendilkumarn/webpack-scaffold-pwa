@@ -17,10 +17,9 @@ let getManifestPath = manifestDetails => {
 
 module.exports = function createDevConfig(config) {
 	let plugins = [];
-
 	if (config) {
 		if (config.serviceWorker) {
-			plugins.push("new GenerateSW()");
+			plugins.push("new GenerateSW()", "new HtmlWebpackPlugin()");
 		}
 		if (config.favPath) {
 			plugins.push("new WebappWebpackPlugin('" + config.favPath + "')");
@@ -30,9 +29,6 @@ module.exports = function createDevConfig(config) {
 		}
 	}
 
-	let devConfig = {
-		plugins
-	};
-
+	let devConfig = { plugins };
 	return devConfig;
 };

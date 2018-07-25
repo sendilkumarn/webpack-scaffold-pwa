@@ -33,7 +33,15 @@ module.exports = class WebpackGenerator extends Generator {
 			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
-			type: 'input'
+			type: 'input',
+			validate: value => {
+				const pattern = /[^\s]*.js/i;
+				if(pattern.test(value)) {
+					return true;
+				} else {
+					return "Invalid path or file.";
+				}
+			}
 		};
 
 		return this.prompt(entryQuestion)
@@ -48,8 +56,10 @@ module.exports = class WebpackGenerator extends Generator {
 					this.options.env.configuration.dev.topScope.push(
 						'const { GenerateSW } = require("workbox-webpack-plugin");'
 					);
-
-					this.dependencies.push("workbox-webpack-plugin");
+					this.options.env.configuration.dev.topScope.push(
+						'const HtmlWebpackPlugin = require("html-webpack-plugin");'
+					);
+					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
 				}
 
 				return this.prompt([Confirm('hasManifest', 'Do you have an existing Manifest File?', ['Yes', 'No'])]);
@@ -99,8 +109,15 @@ module.exports = class WebpackGenerator extends Generator {
 						default: () => "#ffffff",
 						message: 'Please enter the theme color of your application.',
 						name: 'themeColor',
-						type: 'input'
-
+						type: 'input',
+						validate: value => {
+							const pattern = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/i;
+							if(pattern.test(value)) {
+								return true;
+							} else {
+								return "Invalid Hex color code. A valid color looks like #de54ef";
+							}
+						}
 					};
 
 					return this.prompt([nameQuestion, shortNameQuestion, homePageQuestion, themeColorQuestion]);
@@ -153,7 +170,7 @@ module.exports = class WebpackGenerator extends Generator {
 				if (answer) {
 					outputDir = answer['outputDir'];
 					this.options.env.configuration.dev.webpackOptions.output = {
-						filename: '[name].js',
+						filename: "'[name].js'",
 						path: `path.resolve(__dirname, '${outputDir}')`
 					};
 				}
@@ -178,5 +195,11 @@ module.exports = class WebpackGenerator extends Generator {
 
 	writing() {
 		this.config.set("configuration", this.options.env.configuration);
+		this.fs.copy(
+			this.templatePath('_index.js'),
+			this.destinationPath(
+				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
+			)
+		);
 	}
 };

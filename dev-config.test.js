@@ -16,16 +16,18 @@ const ifExistingManifest = {
 };
 const outputDir = "./dist";
 const swExpected = "new GenerateSW()";
+const htmlExpected = "new HtmlWebpackPlugin()";
+const manifestExpected = "new CopyWebpackPlugin([{ from: '/manifest.json', to: ''}])";
 const fpExpected = "new WebappWebpackPlugin('" + favPath + "')";
-const manifestExpected = "new CopyWebpackPlugin([{ from: './manifest.json', to: ''}])";
 
 test('create dev config to return when serviceworker is true', t => {
 	const config = {
 		"serviceWorker": true
 	};
 	const { plugins } = createDevConfig(config);
-	t.is(plugins.length, 1);
+	t.is(plugins.length, 2);
 	t.is(plugins[0], swExpected);
+	t.is(plugins[1], htmlExpected);
 });
 
 test('create dev config to return when only favPath is defined', t => {
@@ -44,9 +46,10 @@ test('create dev config to return empty when both are sent', t => {
 		"serviceWorker": true
 	};
 	const { plugins } = createDevConfig(config);
-	t.is(plugins.length, 2);
+	t.is(plugins.length, 3);
 	t.is(plugins[0], swExpected);
-	t.is(plugins[1], fpExpected);
+	t.is(plugins[1], htmlExpected);
+	t.is(plugins[2], fpExpected);
 });
 
 test('create dev config to return when serviceWorker, favPath, manifestDetails, outputDir are sent and existing manifest file is used', t => {
@@ -57,10 +60,11 @@ test('create dev config to return when serviceWorker, favPath, manifestDetails, 
 		"serviceWorker": true
 	};
 	const { plugins } = createDevConfig(config);
-	t.is(plugins.length, 3);
+	t.is(plugins.length, 4);
 	t.is(plugins[0], swExpected);
-	t.is(plugins[1], fpExpected);
-	t.is(plugins[2], manifestExpected);
+	t.is(plugins[1], htmlExpected);
+	t.is(plugins[2], fpExpected);
+	t.is(plugins[3], manifestExpected);
 });
 
 test('create dev config when serviceWorker, favPath, manifestDetails, outputDir are sent and new manifest file is created', t => {
@@ -71,10 +75,11 @@ test('create dev config when serviceWorker, favPath, manifestDetails, outputDir 
 		"serviceWorker": true
 	};
 	const { plugins } = createDevConfig(config);
-	t.is(plugins.length, 3);
+	t.is(plugins.length, 4);
 	t.is(plugins[0], swExpected);
-	t.is(plugins[1], fpExpected);
-	t.is(plugins[2], manifestExpected);
+	t.is(plugins[1], htmlExpected);
+	t.is(plugins[2], fpExpected);
+	t.is(plugins[3], manifestExpected);
 	t.true(fs.existsSync('manifest.json'));
 });
 
