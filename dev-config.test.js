@@ -17,7 +17,7 @@ const ifExistingManifest = {
 const outputDir = "./dist";
 const swExpected = "new GenerateSW()";
 const htmlExpected = "new HtmlWebpackPlugin()";
-const manifestExpected = "new CopyWebpackPlugin([{ from: '/manifest.json', to: ''}])";
+const manifestExpected = "new CopyWebpackPlugin([{ from: './manifest.json', to: ''}])";
 const fpExpected = "new WebappWebpackPlugin('" + favPath + "')";
 
 test('create dev config to return when serviceworker is true', t => {
