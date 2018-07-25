@@ -141,7 +141,7 @@ module.exports = class WebpackGenerator extends Generator {
 				}
 
 				let outputDirQuestion = {
-					default: () => '/dist',
+					default: () => './dist',
 					message: 'Enter the path to directory where you would like to generate builds: ',
 					name: 'outputDir',
 					type: 'input'

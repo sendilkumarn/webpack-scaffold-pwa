@@ -12,12 +12,12 @@ const ifNewManifest = {
 };
 const ifExistingManifest = {
 	"hasManifest": true,
-	"path": "/manifest.json"
+	"path": "./manifest.json"
 };
-const outputDir = "/dist";
+const outputDir = "./dist";
 const swExpected = "new GenerateSW()";
 const fpExpected = "new WebappWebpackPlugin('" + favPath + "')";
-const manifestExpected = "new CopyWebpackPlugin([{ from: '/manifest.json', to: '" + outputDir + "'}])";
+const manifestExpected = "new CopyWebpackPlugin([{ from: './manifest.json', to: ''}])";
 
 test('create dev config to return when serviceworker is true', t => {
 	const config = {
