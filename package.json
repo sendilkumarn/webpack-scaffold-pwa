@@ -1,6 +1,6 @@
 {
-  "name": "webpack-addons-pwa",
-  "version": "1.0.0",
+  "name": "webpack-scaffold-pwa",
+  "version": "0.0.1",
   "main": "generator.js",
   "author": "Sendil Kumar",
   "license": "MIT",
