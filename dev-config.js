@@ -9,7 +9,7 @@ let getManifestPath = manifestDetails => {
 	} else {
 		let fd = fs.openSync(manifestFile, 'w');
 		fs.writeFileSync(fd, createManifest(manifestDetails));
-		manifestPath = "/" + manifestFile;
+		manifestPath = "./" + manifestFile;
 	}
 
 	return manifestPath;
@@ -17,22 +17,18 @@ let getManifestPath = manifestDetails => {
 
 module.exports = function createDevConfig(config) {
 	let plugins = [];
-
 	if (config) {
 		if (config.serviceWorker) {
-			plugins.push("new GenerateSW()");
+			plugins.push("new GenerateSW()", "new HtmlWebpackPlugin()");
 		}
 		if (config.favPath) {
-			plugins.push("new FaviconsWebpackPlugin('" + config.favPath + "')");
+			plugins.push("new WebappWebpackPlugin('" + config.favPath + "')");
 		}
 		if (config.manifestDetails) {
-			plugins.push("new CopyWebpackPlugin([{ from: '" + getManifestPath(config.manifestDetails) + "', to: '" + config.outputDir + "'}])");
+			plugins.push("new CopyWebpackPlugin([{ from: '" + getManifestPath(config.manifestDetails) + "', to: ''}])");
 		}
 	}
 
-	let devConfig = {
-		plugins
-	};
-
+	let devConfig = { plugins };
 	return devConfig;
 };

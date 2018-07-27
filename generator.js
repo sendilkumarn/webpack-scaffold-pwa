@@ -33,7 +33,15 @@ module.exports = class WebpackGenerator extends Generator {
 			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
-			type: 'input'
+			type: 'input',
+			validate: value => {
+				const pattern = /[^\s]*.js/i;
+				if(pattern.test(value)) {
+					return true;
+				} else {
+					return "Invalid path or file.";
+				}
+			}
 		};
 
 		return this.prompt(entryQuestion)
@@ -48,8 +56,10 @@ module.exports = class WebpackGenerator extends Generator {
 					this.options.env.configuration.dev.topScope.push(
 						'const { GenerateSW } = require("workbox-webpack-plugin");'
 					);
-
-					this.dependencies.push("workbox-webpack-plugin");
+					this.options.env.configuration.dev.topScope.push(
+						'const HtmlWebpackPlugin = require("html-webpack-plugin");'
+					);
+					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
 				}
 
 				return this.prompt([Confirm('hasManifest', 'Do you have an existing Manifest File?', ['Yes', 'No'])]);
@@ -143,12 +153,12 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				if (answer) {
 					favPath = answer['favPath'];
-					this.options.env.configuration.dev.topScope.push('const FaviconsWebpackPlugin = require("favicons-webpack-plugin");');
-					this.dependencies.push("favicons-webpack-plugin");
+					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
+					this.dependencies.push("webapp-webpack-plugin");
 				}
 
 				let outputDirQuestion = {
-					default: () => '/dist',
+					default: () => './dist',
 					message: 'Enter the path to directory where you would like to generate builds: ',
 					name: 'outputDir',
 					type: 'input'
@@ -160,7 +170,7 @@ module.exports = class WebpackGenerator extends Generator {
 				if (answer) {
 					outputDir = answer['outputDir'];
 					this.options.env.configuration.dev.webpackOptions.output = {
-						filename: '[name].js',
+						filename: "'[name].js'",
 						path: `path.resolve(__dirname, '${outputDir}')`
 					};
 				}
@@ -185,5 +195,11 @@ module.exports = class WebpackGenerator extends Generator {
 
 	writing() {
 		this.config.set("configuration", this.options.env.configuration);
+		this.fs.copy(
+			this.templatePath('_index.js'),
+			this.destinationPath(
+				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
+			)
+		);
 	}
 };
