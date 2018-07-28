@@ -111,7 +111,7 @@ module.exports = class WebpackGenerator extends Generator {
 						name: 'themeColor',
 						type: 'input',
 						validate: value => {
-							const pattern = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/i;
+							const pattern = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i;
 							if(pattern.test(value)) {
 								return true;
 							} else {
