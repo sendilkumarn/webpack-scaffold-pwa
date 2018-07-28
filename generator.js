@@ -201,5 +201,9 @@ module.exports = class WebpackGenerator extends Generator {
 				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
 			)
 		);
+		this.fs.copy(
+			this.templatePath('_index.html'),
+			this.destinationPath('./templates/_index.html')
+		);
 	}
 };
