@@ -11,6 +11,7 @@ module.exports = class WebpackGenerator extends Generator {
 		this.dependencies = ["webpack"];
 		opts.env.configuration = {
 			dev: {
+				manifestDetails: {},
 				webpackOptions: {}
 			}
 		};
@@ -18,10 +19,9 @@ module.exports = class WebpackGenerator extends Generator {
 
 	prompting() {
 		let done = this.async();
-
 		let serviceWorker = false;
-		let favPath;
 		let manifestDetails = {};
+		let favPath;
 		let outputDir;
 
 		this.options.env.configuration.dev.topScope = [
@@ -139,6 +139,7 @@ module.exports = class WebpackGenerator extends Generator {
 					};
 				}
 
+				this.options.env.configuration.dev.manifestDetails = manifestDetails;
 				this.options.env.configuration.dev.topScope.push('const CopyWebpackPlugin = require("copy-webpack-plugin")');
 				this.dependencies.push("copy-webpack-plugin");
 
@@ -201,9 +202,12 @@ module.exports = class WebpackGenerator extends Generator {
 				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
 			)
 		);
-		this.fs.copy(
+		this.fs.copyTpl(
 			this.templatePath('_index.html'),
-			this.destinationPath('./templates/_index.html')
+			this.destinationPath('./templates/_index.html'),
+			{
+				title: this.options.env.configuration.dev.manifestDetails.name
+			}
 		);
 	}
 };
