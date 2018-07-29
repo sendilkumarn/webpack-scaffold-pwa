@@ -146,8 +146,24 @@ module.exports = class WebpackGenerator extends Generator {
 			})
 			.then(answer => {
 				if (answer['favicon']) {
-					// TODO: Add the default value here
-					return this.prompt([Input('favPath', 'Enter your fav icon path :')]);
+					let faviconQuestion = {
+						message: 'Enter path to your logo (in .svg or .png): ',
+						name: 'favicon',
+						type: 'input',
+						validate: value => {
+							if(this.fs.exists(value)) {
+								let fileExtension = value.split(".").slice(-1)[0];
+								if(fileExtension==="png"||fileExtension==="svg") {
+									return true;
+								}else{
+									return "Favicon can be in .svg or .png only";
+								}
+							}else{
+								return "Given file doesn't exists.";
+							}
+						}
+					};
+					return this.prompt([faviconQuestion]);
 				}
 			})
 			.then(answer => {
