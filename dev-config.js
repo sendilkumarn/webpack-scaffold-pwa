@@ -2,12 +2,12 @@ const createManifest = require('./utils/create-manifest');
 const fs = require('fs');
 const manifestFile = 'manifest.json';
 
-let getManifestPath = manifestDetails => {
+const getManifestPath = manifestDetails => {
 	let manifestPath;
 	if (manifestDetails.hasManifest) {
 		manifestPath = manifestDetails.path;
 	} else {
-		let fd = fs.openSync(manifestFile, 'w');
+		const fd = fs.openSync(manifestFile, 'w');
 		fs.writeFileSync(fd, createManifest(manifestDetails));
 		manifestPath = "./" + manifestFile;
 	}
@@ -29,6 +29,5 @@ module.exports = function createDevConfig(config) {
 		}
 	}
 
-	let devConfig = { plugins };
-	return devConfig;
+	return { plugins };
 };
