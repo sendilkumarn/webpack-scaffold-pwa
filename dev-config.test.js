@@ -16,7 +16,7 @@ const ifExistingManifest = {
 };
 const outputDir = "./dist";
 const swExpected = "new GenerateSW()";
-const htmlExpected = "new HtmlWebpackPlugin()";
+const htmlExpected = "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})";
 const manifestExpected = "new CopyWebpackPlugin([{ from: './manifest.json', to: ''}])";
 const fpExpected = "new WebappWebpackPlugin('" + favPath + "')";
 

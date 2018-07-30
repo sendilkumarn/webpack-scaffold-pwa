@@ -19,7 +19,7 @@ module.exports = function createDevConfig(config) {
 	let plugins = [];
 	if (config) {
 		if (config.serviceWorker) {
-			plugins.push("new GenerateSW()", "new HtmlWebpackPlugin()");
+			plugins.push("new GenerateSW()", "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
 		}
 		if (config.favPath) {
 			plugins.push("new WebappWebpackPlugin('" + config.favPath + "')");
