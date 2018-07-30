@@ -29,7 +29,7 @@ module.exports = class WebpackGenerator extends Generator {
 			"const path = require('path')"
 		];
 
-		let entryQuestion = {
+		const entryQuestion = {
 			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
@@ -68,7 +68,7 @@ module.exports = class WebpackGenerator extends Generator {
 				if (answer['hasManifest']) {
 					return this.prompt([Input('manifestPath', 'Enter the path to your Manifest file')]);
 				} else {
-					let nameQuestion = {
+					const nameQuestion = {
 						default: () => process.cwd().split(path.sep)
 													.pop(),
 						message: "Let's create one. What is the name of your application?",
@@ -83,7 +83,7 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					let shortNameQuestion = {
+					const shortNameQuestion = {
 						default: () => process.cwd().split(path.sep)
 													.pop(),
 						message: "Enter a short name for your application",
@@ -98,14 +98,14 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					let homePageQuestion = {
+					const homePageQuestion = {
 						default: () => "index.html",
 						message: 'What is the name of the home page of your application?',
 						name: 'homePage',
 						type: 'input'
 					};
 
-					let themeColorQuestion = {
+					const themeColorQuestion = {
 						default: () => "#ffffff",
 						message: 'Please enter the theme color of your application.',
 						name: 'themeColor',
@@ -147,8 +147,23 @@ module.exports = class WebpackGenerator extends Generator {
 			})
 			.then(answer => {
 				if (answer['favicon']) {
-					// TODO: Add the default value here
-					return this.prompt([Input('favPath', 'Enter your fav icon path :')]);
+					const faviconQuestion = {
+						message: 'Enter path to your logo (in .svg or .png): ',
+						name: 'favicon',
+						type: 'input',
+						validate: value => {
+							if(this.fs.exists(value)) {
+								if(value.endsWith(".png")||value.endsWith(".svg")) {
+									return true;
+								}else{
+									return "Favicon can be in .svg or .png only";
+								}
+							}else{
+								return "Given file doesn't exists.";
+							}
+						}
+					};
+					return this.prompt([faviconQuestion]);
 				}
 			})
 			.then(answer => {
@@ -158,7 +173,7 @@ module.exports = class WebpackGenerator extends Generator {
 					this.dependencies.push("webapp-webpack-plugin");
 				}
 
-				let outputDirQuestion = {
+				const outputDirQuestion = {
 					default: () => './dist',
 					message: 'Enter the path to directory where you would like to generate builds: ',
 					name: 'outputDir',
