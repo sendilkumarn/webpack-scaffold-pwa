@@ -1,18 +1,12 @@
-const createManifest = require('./utils/create-manifest');
-const fs = require('fs');
-const manifestFile = 'manifest.json';
-
-let getManifestPath = manifestDetails => {
-	let manifestPath;
-	if (manifestDetails.hasManifest) {
-		manifestPath = manifestDetails.path;
-	} else {
-		let fd = fs.openSync(manifestFile, 'w');
-		fs.writeFileSync(fd, createManifest(manifestDetails));
-		manifestPath = "./" + manifestFile;
-	}
-
-	return manifestPath;
+let getWebappWebpackPlugin = config => {
+	let text = "new WebappWebpackPlugin({";
+	text+="logo:'"+config.favPath+"',";
+	text+="favicons: {";
+	text+="appName:'"+config.manifestDetails.shortName+"',";
+	text+="appDescription:'"+config.manifestDetails.description+"',";
+	text+="theme_color:'"+config.manifestDetails.themeColor+"',";
+	text+="}})";
+	return text;
 };
 
 module.exports = function createDevConfig(config) {
@@ -22,10 +16,7 @@ module.exports = function createDevConfig(config) {
 			plugins.push("new GenerateSW()", "new HtmlWebpackPlugin()");
 		}
 		if (config.favPath) {
-			plugins.push("new WebappWebpackPlugin('" + config.favPath + "')");
-		}
-		if (config.manifestDetails) {
-			plugins.push("new CopyWebpackPlugin([{ from: '" + getManifestPath(config.manifestDetails) + "', to: ''}])");
+			plugins.push(getWebappWebpackPlugin(config));
 		}
 	}
 

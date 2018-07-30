@@ -62,12 +62,6 @@ module.exports = class WebpackGenerator extends Generator {
 					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
 				}
 
-				return this.prompt([Confirm('hasManifest', 'Do you have an existing Manifest File?', ['Yes', 'No'])]);
-			})
-			.then(answer => {
-				if (answer['hasManifest']) {
-					return this.prompt([Input('manifestPath', 'Enter the path to your Manifest file')]);
-				} else {
 					let nameQuestion = {
 						default: () => process.cwd().split(path.sep)
 													.pop(),
@@ -98,10 +92,9 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					let homePageQuestion = {
-						default: () => "index.html",
-						message: 'What is the name of the home page of your application?',
-						name: 'homePage',
+					let descriptionQuestion = {
+						message: 'Enter description of you application: ',
+						name: 'description',
 						type: 'input'
 					};
 
@@ -120,34 +113,28 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					return this.prompt([nameQuestion, shortNameQuestion, homePageQuestion, themeColorQuestion]);
-				}
+					return this.prompt([nameQuestion, shortNameQuestion, descriptionQuestion, themeColorQuestion]);
 			})
 			.then(manifestAnswer => {
-				if ('name' in manifestAnswer) {
-					manifestDetails = {
-						"hasManifest": false,
-						"homePage": manifestAnswer.homePage,
-						"name": manifestAnswer.name,
-						"shortName": manifestAnswer.shortName,
-						"themeColor": manifestAnswer.themeColor
-					};
-				} else {
-					manifestDetails = {
-						"hasManifest": true,
-						"path": manifestAnswer.manifestPath
-					};
-				}
-
-				this.options.env.configuration.dev.topScope.push('const CopyWebpackPlugin = require("copy-webpack-plugin")');
-				this.dependencies.push("copy-webpack-plugin");
-
-				return this.prompt([Confirm('favicon', 'Do you want to add Favicon?')]);
+				manifestDetails = {
+					"description": manifestAnswer.description,
+					"name": manifestAnswer.name,
+					"shortName": manifestAnswer.shortName,
+					"themeColor": manifestAnswer.themeColor
+				};
+				return this.prompt([Confirm('favicon', 'Do you have a existing Favicon to add ?')]);
 			})
 			.then(answer => {
 				if (answer['favicon']) {
-					// TODO: Add the default value here
 					return this.prompt([Input('favPath', 'Enter your fav icon path :')]);
+				}else{
+					this.fs.copy(
+						this.templatePath('webpackIcon.png'),
+						this.destinationPath('./icon.png')
+					);
+					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
+					this.dependencies.push("webapp-webpack-plugin");
+					favPath = './icon.png';
 				}
 			})
 			.then(answer => {
