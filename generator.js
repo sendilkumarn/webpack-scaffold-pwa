@@ -152,8 +152,7 @@ module.exports = class WebpackGenerator extends Generator {
 						type: 'input',
 						validate: value => {
 							if(this.fs.exists(value)) {
-								let fileExtension = value.split(".").slice(-1)[0];
-								if(fileExtension==="png"||fileExtension==="svg") {
+								if(value.endsWith("png")||value.endsWith("svg")) {
 									return true;
 								}else{
 									return "Favicon can be in .svg or .png only";
