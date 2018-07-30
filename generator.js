@@ -111,11 +111,11 @@ module.exports = class WebpackGenerator extends Generator {
 						name: 'themeColor',
 						type: 'input',
 						validate: value => {
-							const pattern = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/i;
+							const pattern = /^#(?:[0-9a-fA-F]{3}){1,2}$/i;
 							if(pattern.test(value)) {
 								return true;
 							} else {
-								return "Invalid Hex color code. A valid color looks like #de54ef";
+								return "Invalid Hex color code. A valid color looks like #de54ef or #abc";
 							}
 						}
 					};
