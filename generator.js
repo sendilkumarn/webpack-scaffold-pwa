@@ -11,6 +11,7 @@ module.exports = class WebpackGenerator extends Generator {
 		this.dependencies = ["webpack"];
 		opts.env.configuration = {
 			dev: {
+				manifestDetails: {},
 				webpackOptions: {}
 			}
 		};
@@ -18,10 +19,9 @@ module.exports = class WebpackGenerator extends Generator {
 
 	prompting() {
 		let done = this.async();
-
 		let serviceWorker = false;
-		let favPath;
 		let manifestDetails = {};
+		let favPath;
 		let outputDir;
 
 		this.options.env.configuration.dev.topScope = [
@@ -29,7 +29,7 @@ module.exports = class WebpackGenerator extends Generator {
 			"const path = require('path')"
 		];
 
-		let entryQuestion = {
+		const entryQuestion = {
 			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
@@ -62,7 +62,7 @@ module.exports = class WebpackGenerator extends Generator {
 					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
 				}
 
-					let nameQuestion = {
+					const nameQuestion = {
 						default: () => process.cwd().split(path.sep)
 													.pop(),
 						message: "Let's create one. What is the name of your application?",
@@ -77,7 +77,7 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					let shortNameQuestion = {
+					const shortNameQuestion = {
 						default: () => process.cwd().split(path.sep)
 													.pop(),
 						message: "Enter a short name for your application",
@@ -91,24 +91,24 @@ module.exports = class WebpackGenerator extends Generator {
 							}
 						}
 					};
-
-					let descriptionQuestion = {
+      
+					const descriptionQuestion = {
 						message: 'Enter description of you application: ',
 						name: 'description',
 						type: 'input'
 					};
 
-					let themeColorQuestion = {
+					const themeColorQuestion = {
 						default: () => "#ffffff",
 						message: 'Please enter the theme color of your application.',
 						name: 'themeColor',
 						type: 'input',
 						validate: value => {
-							const pattern = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/i;
+							const pattern = /^#(?:[0-9a-fA-F]{3}){1,2}$/i;
 							if(pattern.test(value)) {
 								return true;
 							} else {
-								return "Invalid Hex color code. A valid color looks like #de54ef";
+								return "Invalid Hex color code. A valid color looks like #de54ef or #abc";
 							}
 						}
 					};
@@ -126,8 +126,25 @@ module.exports = class WebpackGenerator extends Generator {
 			})
 			.then(answer => {
 				if (answer['favicon']) {
-					return this.prompt([Input('favPath', 'Enter your fav icon path :')]);
-				}else{
+					const faviconQuestion = {
+						message: 'Enter path to your logo (in .svg or .png): ',
+						name: 'favicon',
+						type: 'input',
+						validate: value => {
+							if(this.fs.exists(value)) {
+								if(value.endsWith(".png")||value.endsWith(".svg")) {
+									return true;
+								}else{
+									return "Favicon can be in .svg or .png only";
+								}
+							}else{
+								return "Given file doesn't exists.";
+							}
+						}
+					};
+					return this.prompt([faviconQuestion]);
+        }
+      else{
 					this.fs.copy(
 						this.templatePath('webpackIcon.png'),
 						this.destinationPath('./icon.png')
@@ -144,7 +161,7 @@ module.exports = class WebpackGenerator extends Generator {
 					this.dependencies.push("webapp-webpack-plugin");
 				}
 
-				let outputDirQuestion = {
+				const outputDirQuestion = {
 					default: () => './dist',
 					message: 'Enter the path to directory where you would like to generate builds: ',
 					name: 'outputDir',
@@ -187,6 +204,13 @@ module.exports = class WebpackGenerator extends Generator {
 			this.destinationPath(
 				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
 			)
+		);
+		this.fs.copyTpl(
+			this.templatePath('_index.html'),
+			this.destinationPath('./templates/_index.html'),
+			{
+				title: this.options.env.configuration.dev.manifestDetails.name
+			}
 		);
 	}
 };
