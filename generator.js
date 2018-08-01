@@ -189,6 +189,7 @@ module.exports = class WebpackGenerator extends Generator {
 
 	installPlugins() {
 		this.runInstall(getPackageManager(), this.dependencies, {
+			"dev": true,
 			"save-dev": true
 		});
 	}
