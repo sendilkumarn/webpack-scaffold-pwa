@@ -170,7 +170,7 @@ module.exports = class WebpackGenerator extends Generator {
 				if (answer) {
 					outputDir = answer['outputDir'];
 					this.options.env.configuration.dev.webpackOptions.output = {
-						filename: "'[name].js'",
+						filename: "'bundle.js'",
 						path: `path.resolve(__dirname, '${outputDir}')`
 					};
 				}
