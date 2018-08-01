@@ -15,12 +15,16 @@ webpack-cli init webpack-scaffold-pwa
 
 ## What are we trying here ?
 
-`PWA` requires some boilerplate things to get started and running. We want to make that initial start easier and faster.
+`PWA` requires some boilerplate things to get started and running. We want to make that initial start easier ✅ and faster 🚀.
+
 We want to make your application's lighthouse score in higher `90`-ish and make it better. 
 
 ## What will this generate ?
 
-* Service worker
-* Manifest file
-* Html with all the necessary things
-* Wiring webpack configuration
+* Service worker ⚙️
+* Manifest file 🗂
+* Html with all the necessary things 🚀
+* Wiring webpack configuration 🔌
+
+## Issues / Features
+Have some cool new ideas 😎 come and lets add them together. We will make this 🌏, a better place to live ❤️
