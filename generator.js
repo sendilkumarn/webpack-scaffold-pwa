@@ -1,6 +1,5 @@
 const Generator = require('yeoman-generator');
 const Confirm = require('@webpack-cli/webpack-scaffold').Confirm;
-const Input = require('@webpack-cli/webpack-scaffold').Input;
 const createDevConfig = require('./dev-config');
 const getPackageManager = require('./utils/package-manager');
 const path = require('path');
@@ -91,8 +90,7 @@ module.exports = class WebpackGenerator extends Generator {
 							}
 						}
 					};
-      
-					const descriptionQuestion = {
+										const descriptionQuestion = {
 						message: 'Enter description of you application: ',
 						name: 'description',
 						type: 'input'
@@ -143,8 +141,7 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 					return this.prompt([faviconQuestion]);
-        }
-      else{
+        } else{
 					this.fs.copy(
 						this.templatePath('webpackIcon.png'),
 						this.destinationPath('./icon.png')
