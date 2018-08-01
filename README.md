@@ -6,7 +6,7 @@
 
  [![CircleCI Build Status](https://circleci.com/gh/sendilkumarn/webpack-scaffold-pwa.svg?style=shield)](https://circleci.com/gh/sendilkumarn/webpack-scaffold-pwa)
 
-Webpack addon for adding PWA to your application
+Webpack addon for magically ✨ make your application into PWA
 
 ## Usage
 ```shell
