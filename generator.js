@@ -123,10 +123,10 @@ module.exports = class WebpackGenerator extends Generator {
 				return this.prompt([Confirm('favicon', 'Do you have a existing Favicon to add ?')]);
 			})
 			.then(answer => {
-				if (answer['favicon']) {
+				if (answer['favicon']===true) {
 					const faviconQuestion = {
 						message: 'Enter path to your logo (in .svg or .png): ',
-						name: 'favicon',
+						name: 'favPath',
 						type: 'input',
 						validate: value => {
 							if(this.fs.exists(value)) {
@@ -139,7 +139,7 @@ module.exports = class WebpackGenerator extends Generator {
 								return "Given file doesn't exists.";
 							}
 						}
-					};
+				};
 					return this.prompt([faviconQuestion]);
         } else{
 					this.fs.copy(
