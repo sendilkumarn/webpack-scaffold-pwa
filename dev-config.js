@@ -1,20 +1,32 @@
-let getWebappWebpackPlugin = config => {
-	let text = "new WebappWebpackPlugin({";
-	text+="logo:'"+config.favPath+"',";
-	text+="favicons: {";
-	text+="appName:'"+config.manifestDetails.shortName+"',";
-	text+="appDescription:'"+config.manifestDetails.description+"',";
-	text+="start_url:'"+config.manifestDetails.startURL+"',";
-	text+="theme_color:'"+config.manifestDetails.themeColor+"',";
-	text+="}})";
-	return text;
-};
+const getWebappWebpackPlugin = config => 
+	`new WebappWebpackPlugin({
+		logo: './${config.favPath}',
+		favicons: {
+			appName: '${config.manifestDetails.shortName}',
+			appDescription: '${config.manifestDetails.description}',
+			start_url: '${config.manifestDetails.startURL}',
+			theme_color: '${config.manifestDetails.themeColor}'
+		}
+	})`;
+
+const getSwDetails = config => 
+		`new GenerateSW({
+			clientsClaim: true,
+			skipWaiting: true,
+			runtimeCaching: [{
+				urlPattern: /\\/\$/,
+				handler: 'networkFirst',
+				options: {
+			  		cacheName: 'sw-app-index'
+				}
+			}]
+		})`;
 
 module.exports = function createDevConfig(config) {
 	let plugins = [];
 	if (config) {
 		if (config.serviceWorker) {
-			plugins.push("new GenerateSW()", "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
+			plugins.push(getSwDetails(config), "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
 		}
 		if (config.favPath) {
 			plugins.push(getWebappWebpackPlugin(config));
