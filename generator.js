@@ -1,6 +1,5 @@
 const Generator = require('yeoman-generator');
 const Confirm = require('@webpack-cli/webpack-scaffold').Confirm;
-const Input = require('@webpack-cli/webpack-scaffold').Input;
 const createDevConfig = require('./dev-config');
 const getPackageManager = require('./utils/package-manager');
 const path = require('path');
@@ -23,7 +22,12 @@ module.exports = class WebpackGenerator extends Generator {
 		let manifestDetails = {};
 		let favPath;
 		let outputDir;
-
+		let startUrlQuestion = {
+			default: () => "/",
+			message: "Enter startURL for your application: ",
+			name: "startURL",
+			type: "input"
+		};
 		this.options.env.configuration.dev.topScope = [
 			"const webpack = require('webpack')",
 			"const path = require('path')"
@@ -62,12 +66,6 @@ module.exports = class WebpackGenerator extends Generator {
 					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
 				}
 
-				return this.prompt([Confirm('hasManifest', 'Do you have an existing Manifest File?', ['Yes', 'No'])]);
-			})
-			.then(answer => {
-				if (answer['hasManifest']) {
-					return this.prompt([Input('manifestPath', 'Enter the path to your Manifest file')]);
-				} else {
 					const nameQuestion = {
 						default: () => process.cwd().split(path.sep)
 													.pop(),
@@ -97,11 +95,9 @@ module.exports = class WebpackGenerator extends Generator {
 							}
 						}
 					};
-
-					const homePageQuestion = {
-						default: () => "index.html",
-						message: 'What is the name of the home page of your application?',
-						name: 'homePage',
+										const descriptionQuestion = {
+						message: 'Enter description of you application: ',
+						name: 'description',
 						type: 'input'
 					};
 
@@ -120,36 +116,23 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					return this.prompt([nameQuestion, shortNameQuestion, homePageQuestion, themeColorQuestion]);
-				}
+					return this.prompt([nameQuestion, shortNameQuestion, descriptionQuestion, themeColorQuestion, startUrlQuestion]);
 			})
 			.then(manifestAnswer => {
-				if ('name' in manifestAnswer) {
-					manifestDetails = {
-						"hasManifest": false,
-						"homePage": manifestAnswer.homePage,
-						"name": manifestAnswer.name,
-						"shortName": manifestAnswer.shortName,
-						"themeColor": manifestAnswer.themeColor
-					};
-				} else {
-					manifestDetails = {
-						"hasManifest": true,
-						"path": manifestAnswer.manifestPath
-					};
-				}
-
-				this.options.env.configuration.dev.manifestDetails = manifestDetails;
-				this.options.env.configuration.dev.topScope.push('const CopyWebpackPlugin = require("copy-webpack-plugin")');
-				this.dependencies.push("copy-webpack-plugin");
-
-				return this.prompt([Confirm('favicon', 'Do you want to add Favicon?')]);
+				manifestDetails = {
+					"description": manifestAnswer.description,
+					"name": manifestAnswer.name,
+					"shortName": manifestAnswer.shortName,
+					"startURL": manifestAnswer.startURL,
+					"themeColor": manifestAnswer.themeColor
+				};
+				return this.prompt([Confirm('favicon', 'Do you have a existing Favicon to add ?')]);
 			})
 			.then(answer => {
-				if (answer['favicon']) {
+				if (answer['favicon']===true) {
 					const faviconQuestion = {
 						message: 'Enter path to your logo (in .svg or .png): ',
-						name: 'favicon',
+						name: 'favPath',
 						type: 'input',
 						validate: value => {
 							if(this.fs.exists(value)) {
@@ -162,8 +145,16 @@ module.exports = class WebpackGenerator extends Generator {
 								return "Given file doesn't exists.";
 							}
 						}
-					};
+				};
 					return this.prompt([faviconQuestion]);
+        } else{
+					this.fs.copy(
+						this.templatePath('webpackIcon.png'),
+						this.destinationPath('./icon.png')
+					);
+					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
+					this.dependencies.push("webapp-webpack-plugin");
+					favPath = './icon.png';
 				}
 			})
 			.then(answer => {
@@ -199,6 +190,7 @@ module.exports = class WebpackGenerator extends Generator {
 				};
 
 				this.options.env.configuration.dev.webpackOptions.plugins = createDevConfig(config).plugins;
+				this.options.env.configuration.dev.manifestDetails = manifestDetails;
 				done();
 			});
 	}
@@ -221,6 +213,7 @@ module.exports = class WebpackGenerator extends Generator {
 			this.templatePath('_index.html'),
 			this.destinationPath('./templates/_index.html'),
 			{
+				description: this.options.env.configuration.dev.manifestDetails.description,
 				title: this.options.env.configuration.dev.manifestDetails.name
 			}
 		);
