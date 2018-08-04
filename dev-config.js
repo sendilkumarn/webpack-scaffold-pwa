@@ -4,6 +4,7 @@ let getWebappWebpackPlugin = config => {
 	text+="favicons: {";
 	text+="appName:'"+config.manifestDetails.shortName+"',";
 	text+="appDescription:'"+config.manifestDetails.description+"',";
+	text+="start_url:'"+config.manifestDetails.startURL+"',";
 	text+="theme_color:'"+config.manifestDetails.themeColor+"',";
 	text+="}})";
 	return text;

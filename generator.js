@@ -22,7 +22,12 @@ module.exports = class WebpackGenerator extends Generator {
 		let manifestDetails = {};
 		let favPath;
 		let outputDir;
-
+		let startUrlQuestion = {
+			default: () => "/",
+			message: "Enter startURL for your application: ",
+			name: "startURL",
+			type: "input"
+		};
 		this.options.env.configuration.dev.topScope = [
 			"const webpack = require('webpack')",
 			"const path = require('path')"
@@ -111,13 +116,14 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					return this.prompt([nameQuestion, shortNameQuestion, descriptionQuestion, themeColorQuestion]);
+					return this.prompt([nameQuestion, shortNameQuestion, descriptionQuestion, themeColorQuestion, startUrlQuestion]);
 			})
 			.then(manifestAnswer => {
 				manifestDetails = {
 					"description": manifestAnswer.description,
 					"name": manifestAnswer.name,
 					"shortName": manifestAnswer.shortName,
+					"startURL": manifestAnswer.startURL,
 					"themeColor": manifestAnswer.themeColor
 				};
 				return this.prompt([Confirm('favicon', 'Do you have a existing Favicon to add ?')]);
@@ -184,6 +190,7 @@ module.exports = class WebpackGenerator extends Generator {
 				};
 
 				this.options.env.configuration.dev.webpackOptions.plugins = createDevConfig(config).plugins;
+				this.options.env.configuration.dev.manifestDetails = manifestDetails;
 				done();
 			});
 	}
@@ -206,6 +213,7 @@ module.exports = class WebpackGenerator extends Generator {
 			this.templatePath('_index.html'),
 			this.destinationPath('./templates/_index.html'),
 			{
+				description: this.options.env.configuration.dev.manifestDetails.description,
 				title: this.options.env.configuration.dev.manifestDetails.name
 			}
 		);

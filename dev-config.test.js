@@ -7,12 +7,13 @@ const manifestDetails = {
 	"hasManifest": false,
 	"name": "test",
 	"shortName": "test",
+	"startURL": "/",
 	"themeColor": "#ffffff"
 };
 const outputDir = "./dist";
 const swExpected = "new GenerateSW()";
 const htmlExpected = "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})";
-const fpExpected = "new WebappWebpackPlugin({logo:'test.js',favicons: {appName:'test',appDescription:'index.html',theme_color:'#ffffff',}})";
+const fpExpected = "new WebappWebpackPlugin({logo:'test.js',favicons: {appName:'test',appDescription:'index.html',start_url:'/',theme_color:'#ffffff',}})";
 
 test('create dev config to return when serviceworker is true', t => {
 	const config = {
