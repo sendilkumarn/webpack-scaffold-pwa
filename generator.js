@@ -17,17 +17,20 @@ module.exports = class WebpackGenerator extends Generator {
 	}
 
 	prompting() {
+
 		let done = this.async();
 		let serviceWorker = false;
 		let manifestDetails = {};
 		let favPath;
 		let outputDir;
-		let startUrlQuestion = {
+
+		const startUrlQuestion = {
 			default: () => "/",
 			message: "Enter startURL for your application: ",
 			name: "startURL",
 			type: "input"
 		};
+
 		this.options.env.configuration.dev.topScope = [
 			"const webpack = require('webpack')",
 			"const path = require('path')"
@@ -66,6 +69,12 @@ module.exports = class WebpackGenerator extends Generator {
 					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
 				}
 
+				return this.prompt([Confirm('hasManifest', 'Do you have an existing Manifest File?', ['Yes', 'No'])]);
+			})
+			.then(answer => {
+				if (answer['hasManifest']) {
+					return this.prompt([Input('manifestPath', 'Enter the path to your Manifest file')]);
+				} else {
 					const nameQuestion = {
 						default: () => process.cwd().split(path.sep)
 													.pop(),
@@ -95,9 +104,17 @@ module.exports = class WebpackGenerator extends Generator {
 							}
 						}
 					};
-										const descriptionQuestion = {
+					
+					const descriptionQuestion = {
 						message: 'Enter description of you application: ',
 						name: 'description',
+						type: 'input'
+					};
+
+					const homePageQuestion = {
+						default: () => "index.html",
+						message: 'What is the name of the home page of your application?',
+						name: 'homePage',
 						type: 'input'
 					};
 
@@ -117,6 +134,7 @@ module.exports = class WebpackGenerator extends Generator {
 					};
 
 					return this.prompt([nameQuestion, shortNameQuestion, descriptionQuestion, themeColorQuestion, startUrlQuestion]);
+				}
 			})
 			.then(manifestAnswer => {
 				manifestDetails = {
@@ -135,19 +153,19 @@ module.exports = class WebpackGenerator extends Generator {
 						name: 'favPath',
 						type: 'input',
 						validate: value => {
-							if(this.fs.exists(value)) {
-								if(value.endsWith(".png")||value.endsWith(".svg")) {
-									return true;
+								if(this.fs.exists(value)) {
+									if(value.endsWith(".png")||value.endsWith(".svg")) {
+										return true;
+									}else{
+										return "Favicon can be in .svg or .png only";
+									}
 								}else{
-									return "Favicon can be in .svg or .png only";
+									return "Given file doesn't exists.";
 								}
-							}else{
-								return "Given file doesn't exists.";
 							}
-						}
-				};
+						};
 					return this.prompt([faviconQuestion]);
-        } else{
+        		} else{
 					this.fs.copy(
 						this.templatePath('webpackIcon.png'),
 						this.destinationPath('./icon.png')
