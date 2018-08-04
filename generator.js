@@ -1,5 +1,6 @@
 const Generator = require('yeoman-generator');
 const Confirm = require('@webpack-cli/webpack-scaffold').Confirm;
+const Input = require('@webpack-cli/webpack-scaffold').Input;
 const createDevConfig = require('./dev-config');
 const getPackageManager = require('./utils/package-manager');
 const path = require('path');
@@ -104,7 +105,7 @@ module.exports = class WebpackGenerator extends Generator {
 							}
 						}
 					};
-					
+
 					const descriptionQuestion = {
 						message: 'Enter description of you application: ',
 						name: 'description',
@@ -133,7 +134,7 @@ module.exports = class WebpackGenerator extends Generator {
 						}
 					};
 
-					return this.prompt([nameQuestion, shortNameQuestion, descriptionQuestion, themeColorQuestion, startUrlQuestion]);
+					return this.prompt([nameQuestion, shortNameQuestion, descriptionQuestion, homePageQuestion, themeColorQuestion, startUrlQuestion]);
 				}
 			})
 			.then(manifestAnswer => {
@@ -165,7 +166,7 @@ module.exports = class WebpackGenerator extends Generator {
 							}
 						};
 					return this.prompt([faviconQuestion]);
-        		} else{
+				} else{
 					this.fs.copy(
 						this.templatePath('webpackIcon.png'),
 						this.destinationPath('./icon.png')

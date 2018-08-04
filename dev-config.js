@@ -1,5 +1,4 @@
-const getWebappWebpackPlugin = config => 
-	`new WebappWebpackPlugin({
+const getWebappWebpackPlugin = config => `new WebappWebpackPlugin({
 		logo: './${config.favPath}',
 		favicons: {
 			appName: '${config.manifestDetails.shortName}',
@@ -9,8 +8,7 @@ const getWebappWebpackPlugin = config =>
 		}
 	})`;
 
-const getSwDetails = config => 
-		`new GenerateSW({
+const getSwDetails = () => `new GenerateSW({
 			clientsClaim: true,
 			skipWaiting: true,
 			runtimeCaching: [{
@@ -26,7 +24,7 @@ module.exports = function createDevConfig(config) {
 	let plugins = [];
 	if (config) {
 		if (config.serviceWorker) {
-			plugins.push(getSwDetails(config), "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
+			plugins.push(getSwDetails(), "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
 		}
 		if (config.favPath) {
 			plugins.push(getWebappWebpackPlugin(config));
