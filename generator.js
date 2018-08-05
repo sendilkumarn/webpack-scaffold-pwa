@@ -15,6 +15,8 @@ module.exports = class WebpackGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
+		this.webpackOptions = this.options.env.configuration.dev.webpackOptions;
+		this.manifestDetails = this.options.env.configuration.dev.manifestDetails;
 	}
 
 	prompting() {
@@ -44,7 +46,7 @@ module.exports = class WebpackGenerator extends Generator {
 			type: 'input',
 			validate: value => {
 				const pattern = /[^\s]*.js/i;
-				if(pattern.test(value)) {
+				if (pattern.test(value)) {
 					return true;
 				} else {
 					return "Invalid path or file.";
@@ -54,7 +56,7 @@ module.exports = class WebpackGenerator extends Generator {
 
 		return this.prompt(entryQuestion)
 			.then(entryAnswer => {
-				this.options.env.configuration.dev.webpackOptions.entry = entryAnswer['entryFile'];
+				this.webpackOptions.entry = entryAnswer['entryFile'];
 
 				return this.prompt([Confirm('serviceWorker', 'Do you want to add Service Worker?')]);
 			})
@@ -78,7 +80,7 @@ module.exports = class WebpackGenerator extends Generator {
 				} else {
 					const nameQuestion = {
 						default: () => process.cwd().split(path.sep)
-													.pop(),
+							.pop(),
 						message: "Let's create one. What is the name of your application?",
 						name: 'name',
 						type: 'input',
@@ -93,7 +95,7 @@ module.exports = class WebpackGenerator extends Generator {
 
 					const shortNameQuestion = {
 						default: () => process.cwd().split(path.sep)
-													.pop(),
+							.pop(),
 						message: "Enter a short name for your application",
 						name: 'shortName',
 						type: 'input',
@@ -126,7 +128,7 @@ module.exports = class WebpackGenerator extends Generator {
 						type: 'input',
 						validate: value => {
 							const pattern = /^#(?:[0-9a-fA-F]{3}){1,2}$/i;
-							if(pattern.test(value)) {
+							if (pattern.test(value)) {
 								return true;
 							} else {
 								return "Invalid Hex color code. A valid color looks like #de54ef or #abc";
@@ -148,25 +150,25 @@ module.exports = class WebpackGenerator extends Generator {
 				return this.prompt([Confirm('favicon', 'Do you have a existing Favicon to add ?')]);
 			})
 			.then(answer => {
-				if (answer['favicon']===true) {
+				if (answer['favicon'] === true) {
 					const faviconQuestion = {
 						message: 'Enter path to your logo (in .svg or .png): ',
 						name: 'favPath',
 						type: 'input',
 						validate: value => {
-								if(this.fs.exists(value)) {
-									if(value.endsWith(".png")||value.endsWith(".svg")) {
-										return true;
-									}else{
-										return "Favicon can be in .svg or .png only";
-									}
-								}else{
-									return "Given file doesn't exists.";
+							if (this.fs.exists(value)) {
+								if (value.endsWith(".png") || value.endsWith(".svg")) {
+									return true;
+								} else {
+									return "Favicon can be in .svg or .png only";
 								}
+							} else {
+								return "Given file doesn't exists.";
 							}
-						};
+						}
+					};
 					return this.prompt([faviconQuestion]);
-				} else{
+				} else {
 					this.fs.copy(
 						this.templatePath('webpackIcon.png'),
 						this.destinationPath('./icon.png')
@@ -195,7 +197,7 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				if (answer) {
 					outputDir = answer['outputDir'];
-					this.options.env.configuration.dev.webpackOptions.output = {
+					this.webpackOptions.output = {
 						filename: "'bundle.js'",
 						path: `path.resolve(__dirname, '${outputDir}')`
 					};
@@ -208,8 +210,8 @@ module.exports = class WebpackGenerator extends Generator {
 					serviceWorker
 				};
 
-				this.options.env.configuration.dev.webpackOptions.plugins = createDevConfig(config).plugins;
-				this.options.env.configuration.dev.manifestDetails = manifestDetails;
+				this.webpackOptions.plugins = createDevConfig(config).plugins;
+				this.manifestDetails = manifestDetails;
 				done();
 			});
 	}
@@ -225,15 +227,15 @@ module.exports = class WebpackGenerator extends Generator {
 		this.fs.copy(
 			this.templatePath('_index.js'),
 			this.destinationPath(
-				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
+				this.webpackOptions.entry.slice(1, this.webpackOptions.entry.lastIndexOf("'"))
 			)
 		);
 		this.fs.copyTpl(
 			this.templatePath('_index.html'),
 			this.destinationPath('./templates/_index.html'),
 			{
-				description: this.options.env.configuration.dev.manifestDetails.description,
-				title: this.options.env.configuration.dev.manifestDetails.name
+				description: this.manifestDetails.description,
+				title: this.manifestDetails.name
 			}
 		);
 	}
