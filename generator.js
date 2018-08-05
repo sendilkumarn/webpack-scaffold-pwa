@@ -19,6 +19,11 @@ module.exports = class WebpackGenerator extends Generator {
 		this.manifestDetails = this.options.env.configuration.dev.manifestDetails;
 	}
 
+	/**
+	 * Prompts user for actions on CLI
+	 * It uses prompt() method from Inquirer.js
+	 * @returns {void}
+	 */
 	prompting() {
 
 		let done = this.async();
@@ -216,12 +221,20 @@ module.exports = class WebpackGenerator extends Generator {
 			});
 	}
 
+	/**
+	 * Installs dependencies using returned package manager
+	 * @returns {void}
+	 */
 	installPlugins() {
 		this.runInstall(getPackageManager(), this.dependencies, {
 			"save-dev": true
 		});
 	}
 
+	/**
+	 * Writes generator files to file system
+	 * @returns {void}
+	 */
 	writing() {
 		this.config.set("configuration", this.options.env.configuration);
 		this.fs.copy(
