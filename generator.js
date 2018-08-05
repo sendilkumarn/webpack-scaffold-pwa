@@ -146,12 +146,13 @@ module.exports = class WebpackGenerator extends Generator {
 				}
 			})
 			.then(manifestAnswer => {
+				const { description, name, shortName, startURL, themeColor } = manifestAnswer;
 				manifestDetails = {
-					"description": manifestAnswer.description,
-					"name": manifestAnswer.name,
-					"shortName": manifestAnswer.shortName,
-					"startURL": manifestAnswer.startURL,
-					"themeColor": manifestAnswer.themeColor
+					description,
+					name,
+					shortName,
+					startURL,
+					themeColor
 				};
 				return this.prompt([Confirm('favicon', 'Do you have a existing Favicon to add ?')]);
 			})
