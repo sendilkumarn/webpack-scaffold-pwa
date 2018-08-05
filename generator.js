@@ -36,7 +36,7 @@ module.exports = class WebpackGenerator extends Generator {
 			type: 'input',
 			validate: value => {
 				const pattern = /[^\s]*.js/i;
-				if(pattern.test(value)) {
+				if (pattern.test(value)) {
 					return true;
 				} else {
 					return "Invalid path or file.";
@@ -70,7 +70,7 @@ module.exports = class WebpackGenerator extends Generator {
 				} else {
 					const nameQuestion = {
 						default: () => process.cwd().split(path.sep)
-													.pop(),
+							.pop(),
 						message: "Let's create one. What is the name of your application?",
 						name: 'name',
 						type: 'input',
@@ -85,7 +85,7 @@ module.exports = class WebpackGenerator extends Generator {
 
 					const shortNameQuestion = {
 						default: () => process.cwd().split(path.sep)
-													.pop(),
+							.pop(),
 						message: "Enter a short name for your application",
 						name: 'shortName',
 						type: 'input',
@@ -112,7 +112,7 @@ module.exports = class WebpackGenerator extends Generator {
 						type: 'input',
 						validate: value => {
 							const pattern = /^#(?:[0-9a-fA-F]{3}){1,2}$/i;
-							if(pattern.test(value)) {
+							if (pattern.test(value)) {
 								return true;
 							} else {
 								return "Invalid Hex color code. A valid color looks like #de54ef or #abc";
@@ -152,13 +152,13 @@ module.exports = class WebpackGenerator extends Generator {
 						name: 'favicon',
 						type: 'input',
 						validate: value => {
-							if(this.fs.exists(value)) {
-								if(value.endsWith(".png")||value.endsWith(".svg")) {
+							if (this.fs.exists(value)) {
+								if (value.endsWith(".png") || value.endsWith(".svg")) {
 									return true;
-								}else{
+								} else {
 									return "Favicon can be in .svg or .png only";
 								}
-							}else{
+							} else {
 								return "Given file doesn't exists.";
 							}
 						}
@@ -209,6 +209,26 @@ module.exports = class WebpackGenerator extends Generator {
 		});
 	}
 
+	/**
+	 * Reads JSON file from a given path
+	 * @param {*} filePath path at which file is located
+	 * @returns {*} fileInJSON
+	 */
+	readJSONFile(filePath) {
+		const fileInJSON = this.fs.readJSON(this.destinationPath(filePath), {});
+		return fileInJSON;
+	}
+
+	/**
+	 * Writes JSON to file at a given path
+	 * @param {*} filePath path of file
+	 * @param {*} jsonData Object to be written in file
+	 * @returns {void}
+	 */
+	writeToJSONFile(filePath, jsonData = {}) {
+		this.fs.writeJSON(this.destinationPath(filePath), jsonData);
+	}
+
 	writing() {
 		this.config.set("configuration", this.options.env.configuration);
 		this.fs.copy(
@@ -224,5 +244,11 @@ module.exports = class WebpackGenerator extends Generator {
 				title: this.options.env.configuration.dev.manifestDetails.name
 			}
 		);
+		// Adding webpack build script to generated package.json
+		const pkg = this.readJSONFile('package.json');
+		pkg.scripts["build"] = "webpack --mode development --config ./webpack.config.js";
+		pkg.scripts["build:prod"] = "webpack --mode production --config ./webpack.config.js";
+
+		this.writeToJSONFile('package.json', pkg);
 	}
 };
