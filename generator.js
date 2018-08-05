@@ -190,11 +190,11 @@ module.exports = class WebpackGenerator extends Generator {
 	installPlugins() {
 		const pkgManager = getPackageManager();
 		if(pkgManager==="yarn") {
-			this.runInstall("yarn", this.dependencies, {
+			this.runInstall(pkgManager, this.dependencies, {
 				"dev": true
 			});
 		}else{
-			this.runInstall("npm", this.dependencies, {
+			this.runInstall(pkgManager, this.dependencies, {
 				"save-dev": true
 			});
 		}
