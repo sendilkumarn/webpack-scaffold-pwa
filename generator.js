@@ -15,8 +15,9 @@ module.exports = class WebpackGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		this.webpackOptions = this.options.env.configuration.dev.webpackOptions;
-		this.manifestDetails = this.options.env.configuration.dev.manifestDetails;
+		this.devConfig = this.options.env.configuration.dev;
+		this.webpackOptions = this.devConfig.webpackOptions;
+		this.manifestDetails = this.devConfig.manifestDetails;
 	}
 
 	/**
@@ -39,7 +40,7 @@ module.exports = class WebpackGenerator extends Generator {
 			type: "input"
 		};
 
-		this.options.env.configuration.dev.topScope = [
+		this.devConfig.topScope = [
 			"const webpack = require('webpack')",
 			"const path = require('path')"
 		];
@@ -68,10 +69,10 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				serviceWorker = answer['serviceWorker'];
 				if (serviceWorker) {
-					this.options.env.configuration.dev.topScope.push(
+					this.devConfig.topScope.push(
 						'const { GenerateSW } = require("workbox-webpack-plugin");'
 					);
-					this.options.env.configuration.dev.topScope.push(
+					this.devConfig.topScope.push(
 						'const HtmlWebpackPlugin = require("html-webpack-plugin");'
 					);
 					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
@@ -178,7 +179,7 @@ module.exports = class WebpackGenerator extends Generator {
 						this.templatePath('webpackIcon.png'),
 						this.destinationPath('./icon.png')
 					);
-					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
+					this.devConfig.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
 					this.dependencies.push("webapp-webpack-plugin");
 					favPath = './icon.png';
 				}
@@ -186,7 +187,7 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				if (answer) {
 					favPath = answer['favPath'];
-					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
+					this.devConfig.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
 					this.dependencies.push("webapp-webpack-plugin");
 				}
 
