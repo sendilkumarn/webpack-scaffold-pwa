@@ -256,11 +256,14 @@ module.exports = class WebpackGenerator extends Generator {
 				title: this.options.env.configuration.dev.manifestDetails.name
 			}
 		);
+
 		// Adding webpack build script to generated package.json
 		const pkg = this.readJSONFile('package.json');
-		pkg.scripts["build"] = "webpack --mode development --config ./webpack.config.js";
-		pkg.scripts["build:prod"] = "webpack --mode production --config ./webpack.config.js";
-
+		const scripts = {
+			"build": "webpack --mode development --config ./webpack.config.js",
+			"build:prod": "webpack --mode production --config ./webpack.config.js"
+		};
+		pkg.scripts = Object.assign({}, pkg.scripts, scripts);
 		this.writeToJSONFile('package.json', pkg);
 	}
 };
