@@ -15,8 +15,16 @@ module.exports = class WebpackGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
+		this.devConfig = this.options.env.configuration.dev;
+		this.webpackOptions = this.devConfig.webpackOptions;
+		this.manifestDetails = this.devConfig.manifestDetails;
 	}
 
+	/**
+	 * Prompts user for actions on CLI
+	 * It uses prompt() method from Inquirer.js
+	 * @returns {void}
+	 */
 	prompting() {
 
 		let done = this.async();
@@ -32,7 +40,7 @@ module.exports = class WebpackGenerator extends Generator {
 			type: "input"
 		};
 
-		this.options.env.configuration.dev.topScope = [
+		this.devConfig.topScope = [
 			"const webpack = require('webpack')",
 			"const path = require('path')"
 		];
@@ -54,17 +62,17 @@ module.exports = class WebpackGenerator extends Generator {
 
 		return this.prompt(entryQuestion)
 			.then(entryAnswer => {
-				this.options.env.configuration.dev.webpackOptions.entry = entryAnswer['entryFile'];
+				this.webpackOptions.entry = entryAnswer['entryFile'];
 
 				return this.prompt([Confirm('serviceWorker', 'Do you want to add Service Worker?')]);
 			})
 			.then(answer => {
 				serviceWorker = answer['serviceWorker'];
 				if (serviceWorker) {
-					this.options.env.configuration.dev.topScope.push(
+					this.devConfig.topScope.push(
 						'const { GenerateSW } = require("workbox-webpack-plugin");'
 					);
-					this.options.env.configuration.dev.topScope.push(
+					this.devConfig.topScope.push(
 						'const HtmlWebpackPlugin = require("html-webpack-plugin");'
 					);
 					this.dependencies.push("workbox-webpack-plugin", "html-webpack-plugin");
@@ -138,12 +146,13 @@ module.exports = class WebpackGenerator extends Generator {
 				}
 			})
 			.then(manifestAnswer => {
+				const { description, name, shortName, startURL, themeColor } = manifestAnswer;
 				manifestDetails = {
-					"description": manifestAnswer.description,
-					"name": manifestAnswer.name,
-					"shortName": manifestAnswer.shortName,
-					"startURL": manifestAnswer.startURL,
-					"themeColor": manifestAnswer.themeColor
+					description,
+					name,
+					shortName,
+					startURL,
+					themeColor
 				};
 				return this.prompt([Confirm('favicon', 'Do you have a existing Favicon to add ?')]);
 			})
@@ -171,7 +180,7 @@ module.exports = class WebpackGenerator extends Generator {
 						this.templatePath('webpackIcon.png'),
 						this.destinationPath('./icon.png')
 					);
-					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
+					this.devConfig.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
 					this.dependencies.push("webapp-webpack-plugin");
 					favPath = './icon.png';
 				}
@@ -179,7 +188,7 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				if (answer) {
 					favPath = answer['favPath'];
-					this.options.env.configuration.dev.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
+					this.devConfig.topScope.push('const WebappWebpackPlugin = require("webapp-webpack-plugin");');
 					this.dependencies.push("webapp-webpack-plugin");
 				}
 
@@ -195,7 +204,7 @@ module.exports = class WebpackGenerator extends Generator {
 			.then(answer => {
 				if (answer) {
 					outputDir = answer['outputDir'];
-					this.options.env.configuration.dev.webpackOptions.output = {
+					this.webpackOptions.output = {
 						filename: "'bundle.js'",
 						path: `path.resolve(__dirname, '${outputDir}')`
 					};
@@ -208,12 +217,16 @@ module.exports = class WebpackGenerator extends Generator {
 					serviceWorker
 				};
 
-				this.options.env.configuration.dev.webpackOptions.plugins = createDevConfig(config).plugins;
-				this.options.env.configuration.dev.manifestDetails = manifestDetails;
+				this.webpackOptions.plugins = createDevConfig(config).plugins;
+				this.manifestDetails = manifestDetails;
 				done();
 			});
 	}
 
+	/**
+	 * Installs dependencies using returned package manager
+	 * @returns {void}
+	 */
 	installPlugins() {
 		const pkgManager = getPackageManager();
 		if(pkgManager==="yarn") {
@@ -247,20 +260,24 @@ module.exports = class WebpackGenerator extends Generator {
 		this.fs.writeJSON(this.destinationPath(filePath), jsonData);
 	}
 
+	/**
+	 * Writes generator files to file system
+	 * @returns {void}
+	 */
 	writing() {
 		this.config.set("configuration", this.options.env.configuration);
 		this.fs.copy(
 			this.templatePath('_index.js'),
 			this.destinationPath(
-				this.options.env.configuration.dev.webpackOptions.entry.slice(1, this.options.env.configuration.dev.webpackOptions.entry.lastIndexOf("'"))
+				this.webpackOptions.entry.slice(1, this.webpackOptions.entry.lastIndexOf("'"))
 			)
 		);
 		this.fs.copyTpl(
 			this.templatePath('_index.html'),
 			this.destinationPath('./templates/_index.html'),
 			{
-				description: this.options.env.configuration.dev.manifestDetails.description,
-				title: this.options.env.configuration.dev.manifestDetails.name
+				description: this.manifestDetails.description,
+				title: this.manifestDetails.name
 			}
 		);
 
