@@ -10,11 +10,17 @@ Webpack-cli addon for magically ✨ make your application into PWA
 
 ## Initial Setup
 1. Initialize `npm`
-```shell $ npm init ```
+```shell
+$ npm init 
+```
 2. Install `webpack` and `webpack-cli`
-```shell $ npm install --save-dev webpack webpack-cli```
+```shell
+$ npm install --save-dev webpack webpack-cli
+```
 3. Install `@webpack-cli/init`
-```shell $ npm install --save-dev @webpack-cli/scaffold```
+```shell
+$ npm install --save-dev @webpack-cli/scaffold
+```
 
 ## Usage
 ```shell
