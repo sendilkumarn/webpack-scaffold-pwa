@@ -1,20 +1,10 @@
+const path = require('path');
+
 const Generator = require('yeoman-generator');
-const Confirm = require('@webpack-cli/webpack-scaffold').Confirm;
-const Input = require('@webpack-cli/webpack-scaffold').Input;
+const { Confirm, Input } = require('@webpack-cli/webpack-scaffold');
 const createDevConfig = require('./dev-config');
 const getPackageManager = require('./utils/package-manager');
-const path = require('path');
-const chalk = require('chalk');
-
-/**
- * Welcome messages for users
- * @returns {void}
- */
-const welcomeMessage = () => {
-	console.log("\n\t\t"+chalk.bold.blue('webpack-cli ')+"> PWA starter\n\t\t-------------------------\n");
-	console.log(chalk.bold.italic.green("\t\t  webpack-scaffold-pwa")+"\n");
-	console.log("Instructions: Answer following questions and you are good to go 🙌  😎\n");
-};
+const welcomeMessage = require('./utils/welcome');
 
 module.exports = class WebpackGenerator extends Generator {
 	constructor(args, opts) {

@@ -13,20 +13,16 @@ Webpack-cli addon for magically ✨ make your application into PWA
 ```shell
 $ npm init 
 ```
-2. Install `webpack` and `webpack-cli`
+2. Install `webpack`, `webpack-cli`, and `@webpack-cli/init`
 ```shell
-$ npm install --save-dev webpack webpack-cli
-```
-3. Install `@webpack-cli/init`
-```shell
-$ npm install --save-dev @webpack-cli/scaffold
+$ npm install --save-dev webpack webpack-cli @webpack-cli/init
 ```
 
 ## Usage
 ```shell
-webpack-cli init webpack-scaffold-pwa
+npx webpack-cli init webpack-scaffold-pwa
 ```
-Answer some questions .... and you are good to go.🛫
+Design your PWA by answering questions .... 🛫
 
 ## What are we trying here ?
 
