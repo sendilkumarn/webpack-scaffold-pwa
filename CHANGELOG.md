@@ -1,5 +1,5 @@
-<a name="0.0.2"></a>
-# [0.0.2](https://github.com/sendilkumarn/webpack-scaffold-pwa/compare/0.0.1...0.0.2) (2018-08-06)
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/sendilkumarn/webpack-scaffold-pwa/compare/0.0.1...0.1.0) (2018-08-06)
 ### Features
 * Cool our scores for PWA is now at 100 🚀🎉
 * Switched to WebappWebpackPlugin 
