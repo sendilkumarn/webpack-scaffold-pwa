@@ -4,6 +4,17 @@ const Input = require('@webpack-cli/webpack-scaffold').Input;
 const createDevConfig = require('./dev-config');
 const getPackageManager = require('./utils/package-manager');
 const path = require('path');
+const chalk = require('chalk');
+
+/**
+ * Welcome messages for users
+ * @returns {void}
+ */
+const welcomeMessage = () => {
+	console.log("\n\t\t"+chalk.bold.blue('webpack-cli ')+"> PWA starter\n\t\t-------------------------\n");
+	console.log(chalk.bold.italic.green("\t\t  webpack-scaffold-pwa")+"\n");
+	console.log("Instructions: Answer following questions and you are good to go 🙌  😎\n");
+};
 
 module.exports = class WebpackGenerator extends Generator {
 	constructor(args, opts) {
@@ -32,7 +43,6 @@ module.exports = class WebpackGenerator extends Generator {
 		let manifestDetails = {};
 		let favPath;
 		let outputDir;
-
 		const startUrlQuestion = {
 			default: () => "/",
 			message: "Enter startURL for your application: ",
@@ -59,7 +69,7 @@ module.exports = class WebpackGenerator extends Generator {
 				}
 			}
 		};
-
+		welcomeMessage();
 		return this.prompt(entryQuestion)
 			.then(entryAnswer => {
 				this.webpackOptions.entry = entryAnswer['entryFile'];
