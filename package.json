@@ -4,6 +4,10 @@
   "main": "generator.js",
   "author": "Sendil Kumar",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sendilkumarn/webpack-scaffold-pwa.git"
+  },
   "scripts": {
     "lint": "eslint *.js",
     "test": "ava --verbose"
@@ -17,5 +21,47 @@
     "ava": "^1.0.0-beta.3",
     "babel-eslint": "^8.2.1",
     "eslint": "^4.18.1"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Ajay Poshak",
+      "url": "https://github.com/AjayPoshak",
+      "contributions": 1,
+      "additions": 34,
+      "deletions": 17,
+      "hireable": true
+    },
+    {
+      "name": "Dhruvdutt Jadhav",
+      "url": "https://github.com/dhruvdutt",
+      "contributions": 7,
+      "additions": 346,
+      "deletions": 322,
+      "hireable": true
+    },
+    {
+      "name": "Harshit Jain",
+      "url": "https://github.com/Symphoria",
+      "contributions": 5,
+      "additions": 280,
+      "deletions": 43,
+      "hireable": null
+    },
+    {
+      "name": "Sendil Kumar N",
+      "url": "https://github.com/sendilkumarn",
+      "contributions": 27,
+      "additions": 683,
+      "deletions": 130,
+      "hireable": true
+    },
+    {
+      "name": "Rishabh Chawla",
+      "url": "https://github.com/rishabh3112",
+      "contributions": 19,
+      "additions": 228,
+      "deletions": 174,
+      "hireable": true
+    }
+  ]
 }
