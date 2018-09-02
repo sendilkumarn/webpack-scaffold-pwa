@@ -1,7 +1,8 @@
 {
   "name": "webpack-scaffold-pwa",
   "version": "0.1.0",
-  "main": "generator.js",
+  "main": "./main/generator.js",
+  "types": "./main/generator.d.ts",
   "author": "Sendil Kumar",
   "license": "MIT",
   "scripts": {
