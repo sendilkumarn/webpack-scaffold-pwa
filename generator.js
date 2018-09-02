@@ -1,5 +1,4 @@
 const path = require('path');
-
 const Generator = require('yeoman-generator');
 const { Confirm, Input } = require('@webpack-cli/webpack-scaffold');
 const createDevConfig = require('./dev-config');

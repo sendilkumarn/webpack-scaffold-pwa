@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+      "outDir": "./main",
+      "allowJs": true,
+      "target": "es5",
+      "declaration": true
+  },
+  "include": [
+      "./*",
+      "./utils/*"
+  ]
+}
