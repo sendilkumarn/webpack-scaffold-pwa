@@ -6,7 +6,7 @@ const violet = chalk.bold.rgb(102,0,153);
  * Welcome messages for users
  * @returns {void}
  */
-const welcomeMessage = () => {
+const welcomeMessage = (): void => {
 	log(`
 	___________       ________
 	___  __ \\_${violet(" |     / /")}__    |

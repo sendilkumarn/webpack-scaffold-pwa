@@ -6,10 +6,12 @@
   "author": "Sendil Kumar",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "lint": "eslint *.js",
     "test": "ava --verbose"
   },
   "dependencies": {
+    "@types/cross-spawn": "^6.0.0",
     "@webpack-cli/webpack-scaffold": "^0.1.0",
     "cross-spawn": "^6.0.5",
     "yeoman-generator": "^2.0.2"
