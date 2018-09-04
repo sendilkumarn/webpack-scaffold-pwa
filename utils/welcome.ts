@@ -1,4 +1,4 @@
-const chalk = require('chalk');
+import chalk from 'chalk';
 const log = console.log;
 const violet = chalk.bold.rgb(102,0,153);
 

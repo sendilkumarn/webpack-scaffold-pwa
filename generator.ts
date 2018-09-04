@@ -10,6 +10,8 @@ export default class WebpackGenerator extends Generator {
 	devConfig: any;
 	webpackOptions: any;
 	manifestDetails: any;
+	configuration: any;
+
 	constructor(args, opts) {
 		super(args, opts);
 		this.dependencies = ["webpack"];
@@ -19,7 +21,7 @@ export default class WebpackGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		this.devConfig = this.options.env.configuration.dev;
+		this.devConfig = this.configuration.dev;
 		this.webpackOptions = this.devConfig.webpackOptions;
 		this.manifestDetails = this.devConfig.manifestDetails;
 	}
@@ -27,9 +29,8 @@ export default class WebpackGenerator extends Generator {
 	/**
 	 * Prompts user for actions on CLI
 	 * It uses prompt() method from Inquirer.js
-	 * @returns {void}
-	 */
-	async prompting(): Promise<void> {
+	 **/
+	prompting(){
 
 		let serviceWorker = false;
 		let manifestDetails = {};
@@ -47,7 +48,7 @@ export default class WebpackGenerator extends Generator {
 			"const path = require('path')"
 		];
 
-		const entryQuestion = {
+		const entryQuestion: Object = {
 			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
@@ -266,7 +267,7 @@ export default class WebpackGenerator extends Generator {
 	 * @returns {void}
 	 */
 	writing(): void {
-		this.config.set("configuration", this.options.env.configuration);
+		this.config.set("configuration", this.configuration);
 		this.fs.copy(
 			this.templatePath('_index.js'),
 			this.destinationPath(
