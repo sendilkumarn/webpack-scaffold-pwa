@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint *.js",
-    "test": "ava --verbose"
+    "test": "tsc && ava --verbose"
   },
   "dependencies": {
     "@types/cross-spawn": "^6.0.0",
@@ -21,6 +21,7 @@
     "@types/yeoman-generator": "^2.0.3",
     "ava": "^1.0.0-beta.3",
     "babel-eslint": "^8.2.1",
-    "eslint": "^4.18.1"
+    "eslint": "^4.18.1",
+    "typescript": "^3.0.3"
   }
 }
