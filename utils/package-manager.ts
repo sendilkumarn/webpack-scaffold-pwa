@@ -1,4 +1,4 @@
-const spawn = require("cross-spawn");
+import spawn from "cross-spawn";
 
 /**
  *
@@ -16,4 +16,4 @@ const getPackageManager = () => {
 	return "yarn";
 };
 
-module.exports = getPackageManager;
+export default getPackageManager;

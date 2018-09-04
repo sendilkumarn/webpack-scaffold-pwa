@@ -8,16 +8,16 @@ const violet = chalk.bold.rgb(102,0,153);
  */
 const welcomeMessage = () => {
 	log(`
-	___________       ________ 
+	___________       ________
 	___  __ \\_${violet(" |     / /")}__    |
 	__  /_/ /_ ${violet("| /| / /")}__  /| |
 	_  ____/__ ${violet("|/ |/ / ")}_  ___ |
 	/_/     __${violet("__/|__/  ")}/_/  |_|
-							
+
 	`)
-					
+
 	log(chalk.bold.blue("webpack-scaffold-pwa"));
 	log("Come let us build a PWA 😎 🚀");
 };
 
-module.exports = welcomeMessage;
+export default welcomeMessage;

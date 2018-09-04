@@ -1,11 +1,15 @@
-const path = require('path');
-const Generator = require('yeoman-generator');
-const { Confirm, Input } = require('@webpack-cli/webpack-scaffold');
-const createDevConfig = require('./dev-config');
-const getPackageManager = require('./utils/package-manager');
-const welcomeMessage = require('./utils/welcome');
+import * as path from 'path';
+import * as Generator from 'yeoman-generator';
+import { Confirm, Input } from '@webpack-cli/webpack-scaffold';
+import createDevConfig from './dev-config';
+import getPackageManager from './utils/package-manager';
+import welcomeMessage from './utils/welcome';
 
-module.exports = class WebpackGenerator extends Generator {
+export default class WebpackGenerator extends Generator {
+	dependencies: string[];
+	devConfig: any;
+	webpackOptions: any;
+	manifestDetails: any;
 	constructor(args, opts) {
 		super(args, opts);
 		this.dependencies = ["webpack"];
@@ -25,9 +29,8 @@ module.exports = class WebpackGenerator extends Generator {
 	 * It uses prompt() method from Inquirer.js
 	 * @returns {void}
 	 */
-	prompting() {
+	async prompting(): Promise<void> {
 
-		let done = this.async();
 		let serviceWorker = false;
 		let manifestDetails = {};
 		let favPath;
@@ -218,7 +221,6 @@ module.exports = class WebpackGenerator extends Generator {
 
 				this.webpackOptions.plugins = createDevConfig(config).plugins;
 				this.manifestDetails = manifestDetails;
-				done();
 			});
 	}
 
@@ -226,7 +228,7 @@ module.exports = class WebpackGenerator extends Generator {
 	 * Installs dependencies using returned package manager
 	 * @returns {void}
 	 */
-	installPlugins() {
+	installPlugins(): void {
 		const pkgManager = getPackageManager();
 		if(pkgManager==="yarn") {
 			this.runInstall(pkgManager, this.dependencies, {
@@ -244,7 +246,7 @@ module.exports = class WebpackGenerator extends Generator {
 	 * @param {*} filePath path at which file is located
 	 * @returns {*} fileInJSON
 	 */
-	readJSONFile(filePath) {
+	readJSONFile(filePath: any): any {
 		const fileInJSON = this.fs.readJSON(this.destinationPath(filePath), {});
 		return fileInJSON;
 	}
@@ -255,7 +257,7 @@ module.exports = class WebpackGenerator extends Generator {
 	 * @param {*} jsonData Object to be written in file
 	 * @returns {void}
 	 */
-	writeToJSONFile(filePath, jsonData = {}) {
+	writeToJSONFile(filePath: any, jsonData: any = {}): void {
 		this.fs.writeJSON(this.destinationPath(filePath), jsonData);
 	}
 
@@ -263,7 +265,7 @@ module.exports = class WebpackGenerator extends Generator {
 	 * Writes generator files to file system
 	 * @returns {void}
 	 */
-	writing() {
+	writing(): void {
 		this.config.set("configuration", this.options.env.configuration);
 		this.fs.copy(
 			this.templatePath('_index.js'),
@@ -286,7 +288,7 @@ module.exports = class WebpackGenerator extends Generator {
 			"build": "webpack --mode development --config ./webpack.config.js",
 			"build:prod": "webpack --mode production --config ./webpack.config.js"
 		};
-		pkg.scripts = Object.assign({}, pkg.scripts, scripts);
+		pkg.scripts = {...pkg.scripts, ...scripts};
 		this.writeToJSONFile('package.json', pkg);
 	}
 };

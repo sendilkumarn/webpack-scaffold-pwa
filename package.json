@@ -15,6 +15,8 @@
     "yeoman-generator": "^2.0.2"
   },
   "devDependencies": {
+    "@types/node": "^10.9.4",
+    "@types/yeoman-generator": "^2.0.3",
     "ava": "^1.0.0-beta.3",
     "babel-eslint": "^8.2.1",
     "eslint": "^4.18.1"
