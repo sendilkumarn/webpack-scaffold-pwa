@@ -1,5 +1,4 @@
 const path = require('path');
-const WebpackGenerator = require('./generator');
 
 const startUrlQuestion = {
 	default: () => "/",
