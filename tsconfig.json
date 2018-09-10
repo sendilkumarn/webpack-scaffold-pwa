@@ -2,8 +2,7 @@
   "compilerOptions": {
       "outDir": "./main",
       "lib": [ "es2015" ],
-      "target": "es5",
-      "declaration": true
+      "target": "es5"
   },
   "include": [
       "./*",

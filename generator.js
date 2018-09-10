@@ -1,17 +1,11 @@
-import * as path from 'path';
-import * as Generator from 'yeoman-generator';
-import { Confirm, Input } from '@webpack-cli/webpack-scaffold';
-import createDevConfig from './dev-config';
-import getPackageManager from './utils/package-manager';
-import welcomeMessage from './utils/welcome';
+const path = require('path');
+const Generator = require('yeoman-generator');
+const { Confirm, Input } = require('@webpack-cli/webpack-scaffold');
+const createDevConfig = require('./dev-config');
+const getPackageManager = require('./utils/package-manager');
+const welcomeMessage = require('./utils/welcome');
 
-export default class WebpackGenerator extends Generator {
-	dependencies: string[];
-	devConfig: any;
-	webpackOptions: any;
-	manifestDetails: any;
-	configuration: any;
-
+module.exports = class WebpackGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.dependencies = ["webpack"];
@@ -21,7 +15,7 @@ export default class WebpackGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		this.devConfig = this.configuration.dev;
+		this.devConfig = this.options.env.configuration.dev;
 		this.webpackOptions = this.devConfig.webpackOptions;
 		this.manifestDetails = this.devConfig.manifestDetails;
 	}
@@ -29,9 +23,11 @@ export default class WebpackGenerator extends Generator {
 	/**
 	 * Prompts user for actions on CLI
 	 * It uses prompt() method from Inquirer.js
-	 **/
-	prompting(){
+	 * @returns {void}
+	 */
+	prompting() {
 
+		let done = this.async();
 		let serviceWorker = false;
 		let manifestDetails = {};
 		let favPath;
@@ -48,7 +44,7 @@ export default class WebpackGenerator extends Generator {
 			"const path = require('path')"
 		];
 
-		const entryQuestion: Object = {
+		const entryQuestion = {
 			default: () => "'./index.js'",
 			message: 'Which file would be the first to enter the application?',
 			name: 'entryFile',
@@ -62,7 +58,7 @@ export default class WebpackGenerator extends Generator {
 				}
 			}
 		};
-		welcomeMessage();
+		welcomeMessage.default();
 		return this.prompt(entryQuestion)
 			.then(entryAnswer => {
 				this.webpackOptions.entry = entryAnswer['entryFile'];
@@ -222,6 +218,7 @@ export default class WebpackGenerator extends Generator {
 
 				this.webpackOptions.plugins = createDevConfig(config).plugins;
 				this.manifestDetails = manifestDetails;
+				done();
 			});
 	}
 
@@ -229,7 +226,7 @@ export default class WebpackGenerator extends Generator {
 	 * Installs dependencies using returned package manager
 	 * @returns {void}
 	 */
-	installPlugins(): void {
+	installPlugins() {
 		const pkgManager = getPackageManager();
 		if(pkgManager==="yarn") {
 			this.runInstall(pkgManager, this.dependencies, {
@@ -247,7 +244,7 @@ export default class WebpackGenerator extends Generator {
 	 * @param {*} filePath path at which file is located
 	 * @returns {*} fileInJSON
 	 */
-	readJSONFile(filePath: any): any {
+	readJSONFile(filePath) {
 		const fileInJSON = this.fs.readJSON(this.destinationPath(filePath), {});
 		return fileInJSON;
 	}
@@ -258,7 +255,7 @@ export default class WebpackGenerator extends Generator {
 	 * @param {*} jsonData Object to be written in file
 	 * @returns {void}
 	 */
-	writeToJSONFile(filePath: any, jsonData: any = {}): void {
+	writeToJSONFile(filePath, jsonData = {}) {
 		this.fs.writeJSON(this.destinationPath(filePath), jsonData);
 	}
 
@@ -266,8 +263,8 @@ export default class WebpackGenerator extends Generator {
 	 * Writes generator files to file system
 	 * @returns {void}
 	 */
-	writing(): void {
-		this.config.set("configuration", this.configuration);
+	writing() {
+		this.config.set("configuration", this.options.env.configuration);
 		this.fs.copy(
 			this.templatePath('_index.js'),
 			this.destinationPath(
@@ -289,7 +286,7 @@ export default class WebpackGenerator extends Generator {
 			"build": "webpack --mode development --config ./webpack.config.js",
 			"build:prod": "webpack --mode production --config ./webpack.config.js"
 		};
-		pkg.scripts = {...pkg.scripts, ...scripts};
+		pkg.scripts = Object.assign({}, pkg.scripts, scripts);
 		this.writeToJSONFile('package.json', pkg);
 	}
 };

@@ -6,7 +6,7 @@
   "author": "Sendil Kumar",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp generator.js ./main/generator.js",
     "lint": "eslint *.js",
     "test": "tsc && ava --verbose"
   },
