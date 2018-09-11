@@ -81,23 +81,9 @@ module.exports = class WebpackGenerator extends Generator {
 			})
 			.then(answer => {
 				if (answer['favicon'] === true) {
-					const faviconQuestion = {
-						message: 'Enter path to your logo (in .svg or .png): ',
-						name: 'favPath',
-						type: 'input',
-						validate: value => {
-							if (this.fs.exists(value)) {
-								if (value.endsWith(".png") || value.endsWith(".svg")) {
-									return true;
-								} else {
-									return "Favicon can be in .svg or .png only";
-								}
-							} else {
-								return "Given file doesn't exists.";
-							}
-						}
-					};
-					return this.prompt([faviconQuestion]);
+					// Binding the value of `this`
+					questions.faviconQuestion.validate = questions.faviconQuestion.validate.bind(this);
+					return this.prompt([questions.faviconQuestion]);
 				} else {
 					this.fs.copy(
 						this.templatePath('webpackIcon.png'),
