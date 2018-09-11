@@ -84,8 +84,8 @@ const faviconQuestion = {
 	message: 'Enter path to your logo (in .svg or .png): ',
 	name: 'favPath',
 	type: 'input',
-	validate: value => {
-		if (this.fs.exists(value)) { //eslint-disable-line
+	validate: function validate(value) {
+		if (this.fs.exists(value)) {
 			if (value.endsWith(".png") || value.endsWith(".svg")) {
 				return true;
 			} else {
