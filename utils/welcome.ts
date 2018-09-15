@@ -1,4 +1,4 @@
-const chalk = require('chalk');
+import chalk from 'chalk';
 const log = console.log;
 const violet = chalk.bold.rgb(102,0,153);
 
@@ -6,7 +6,7 @@ const violet = chalk.bold.rgb(102,0,153);
  * Welcome messages for users
  * @returns {void}
  */
-const welcomeMessage = () => {
+const welcomeMessage = (): void => {
 	log(`
 	___________       ________
 	___  __ \\_${violet(" |     / /")}__    |
@@ -20,4 +20,4 @@ const welcomeMessage = () => {
 	log("Come let us build a PWA 😎 🚀");
 };
 
-module.exports = welcomeMessage;
+export default welcomeMessage;

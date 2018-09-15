@@ -20,7 +20,7 @@ const getSwDetails = () => `new GenerateSW({
 			}]
 		})`;
 
-module.exports = function createDevConfig(config) {
+export default function createDevConfig(config) {
 	let plugins = [];
 	if (config) {
 		if (config.serviceWorker) {

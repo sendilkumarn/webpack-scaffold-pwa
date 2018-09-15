@@ -1,22 +1,28 @@
 {
   "name": "webpack-scaffold-pwa",
   "version": "0.1.0",
-  "main": "generator.js",
+  "main": "./main/generator.js",
+  "types": "./main/generator.d.ts",
   "author": "Sendil Kumar",
   "license": "MIT",
   "scripts": {
+    "build": "tsc && cp generator.js ./main/generator.js",
     "lint": "eslint *.js",
-    "test": "ava --verbose"
+    "test": "tsc && ava --verbose"
   },
   "dependencies": {
+    "@types/cross-spawn": "^6.0.0",
     "@webpack-cli/webpack-scaffold": "^0.1.0",
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "yeoman-generator": "^2.0.2"
   },
   "devDependencies": {
+    "@types/node": "^10.9.4",
+    "@types/yeoman-generator": "^2.0.3",
     "ava": "^1.0.0-beta.3",
     "babel-eslint": "^8.2.1",
-    "eslint": "^4.18.1"
+    "eslint": "^4.18.1",
+    "typescript": "^3.0.3"
   }
 }

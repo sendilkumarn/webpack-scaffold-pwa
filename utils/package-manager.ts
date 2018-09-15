@@ -1,4 +1,4 @@
-const spawn = require("cross-spawn");
+import * as spawn from "cross-spawn";
 
 /**
  *
@@ -8,7 +8,7 @@ const spawn = require("cross-spawn");
  * @returns {String} - The package manager name
  */
 
-const getPackageManager = () => {
+const getPackageManager = (): string => {
 	if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
 		return "npm";
 	}
@@ -16,4 +16,4 @@ const getPackageManager = () => {
 	return "yarn";
 };
 
-module.exports = getPackageManager;
+export default getPackageManager;

@@ -1,5 +1,5 @@
-const test = require('ava');
-const createDevConfig = require('./dev-config');
+import test from 'ava';
+import createDevConfig from './dev-config';
 
 const favPath = "test.js";
 const manifestDetails = {
@@ -81,4 +81,4 @@ test('create dev config when serviceWorker, favPath, manifestDetails, outputDir 
 	t.is(plugins[2], fpExpected);
 });
 
-test('create dev config to return empty when config is empty', t => t.is(createDevConfig().plugins.length, 0));
+test('create dev config to return empty when config is empty', t => t.is(createDevConfig({}).plugins.length, 0));
