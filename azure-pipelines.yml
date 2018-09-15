@@ -16,7 +16,7 @@ jobs:
           npm install -g npm@latest
         displayName: "Install npm"
       - script: |
-          npm ci
+          npm install
         displayName: "Install dependencies"
       - script: |
           npm test
@@ -38,7 +38,7 @@ jobs:
           npm install -g npm@latest
         displayName: "Install npm"
       - script: |
-          npm ci
+          npm install
         displayName: "Install dependencies"
       - script: |
           npm test
@@ -61,7 +61,7 @@ jobs:
           npm install -g npm@latest
         displayName: "Install npm"
       - script: |
-          npm ci
+          npm install
         displayName: "Install dependencies"
       - script: |
           npm test
