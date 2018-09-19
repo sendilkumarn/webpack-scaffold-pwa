@@ -1,0 +1,68 @@
+jobs:
+  - job: linux
+    pool:
+      vmImage: ubuntu-16.04
+    strategy:
+      maxParallel: 1
+      matrix:
+        node-10:
+          node_version: ^10.10.0
+    steps:
+      - task: NodeTool@0
+        displayName: "Install Node.js"
+        inputs:
+          versionSpec: $(node_version)
+      - script: |
+          npm install -g npm@latest
+        displayName: "Install npm"
+      - script: |
+          npm install
+        displayName: "Install dependencies"
+      - script: |
+          npm test
+        displayName: "Run tests"
+  - job: windows
+    pool:
+      vmImage: vs2017-win2016
+    strategy:
+      maxParallel: 1
+      matrix:
+        node-10:
+          node_version: ^10.10.0
+    steps:
+      - task: NodeTool@0
+        displayName: "Install Node.js"
+        inputs:
+          versionSpec: $(node_version)
+      - script: |
+          npm install -g npm@latest
+        displayName: "Install npm"
+      - script: |
+          npm install
+        displayName: "Install dependencies"
+      - script: |
+          npm test
+        displayName: "Run tests"
+
+  - job: macos
+    pool:
+      vmImage: "macOS 10.13"
+    strategy:
+      maxParallel: 1
+      matrix:
+        node-10:
+          node_version: ^10.10.0
+    steps:
+      - task: NodeTool@0
+        displayName: "Install Node.js"
+        inputs:
+          versionSpec: $(node_version)
+      - script: |
+          npm install -g npm@latest
+        displayName: "Install npm"
+      - script: |
+          npm install
+        displayName: "Install dependencies"
+      - script: |
+          npm test
+        displayName: "Run tests"

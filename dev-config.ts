@@ -1,4 +1,4 @@
-const getWebappWebpackPlugin = config => `new WebappWebpackPlugin({
+const getWebappWebpackPlugin = (config) => `new WebappWebpackPlugin({
 		logo: './${config.favPath}',
 		favicons: {
 			appName: '${config.manifestDetails.shortName}',
@@ -20,16 +20,16 @@ const getSwDetails = () => `new GenerateSW({
 			}]
 		})`;
 
-module.exports = function createDevConfig(config) {
-	let plugins = [];
-	if (config) {
-		if (config.serviceWorker) {
-			plugins.push(getSwDetails(), "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
-		}
-		if (config.favPath) {
-			plugins.push(getWebappWebpackPlugin(config));
-		}
-	}
+export default function createDevConfig(config) {
+ const plugins = [];
+ if (config) {
+  if (config.serviceWorker) {
+   plugins.push(getSwDetails(), "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
+  }
+  if (config.favPath) {
+   plugins.push(getWebappWebpackPlugin(config));
+  }
+ }
 
-	return { plugins };
-};
+ return { plugins };
+}
