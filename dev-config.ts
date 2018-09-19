@@ -22,14 +22,13 @@ const getSwDetails = () => `new GenerateSW({
 
 export default function createDevConfig(config) {
  const plugins = [];
- if (config) {
-  if (config.serviceWorker) {
+
+  if (config && config.serviceWorker) {
    plugins.push(getSwDetails(), "new HtmlWebpackPlugin({filename:'index.html',template:'./templates/_index.html'})");
   }
-  if (config.favPath) {
+  if (config && config.favPath) {
    plugins.push(getWebappWebpackPlugin(config));
   }
- }
 
  return { plugins };
 }
