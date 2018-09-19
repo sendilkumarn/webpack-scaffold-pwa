@@ -9,11 +9,11 @@ import * as spawn from "cross-spawn";
  */
 
 const getPackageManager = (): string => {
-	if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
-		return "npm";
-	}
+ if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
+  return "npm";
+ }
 
-	return "yarn";
+ return "yarn";
 };
 
 export default getPackageManager;
