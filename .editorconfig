@@ -2,7 +2,11 @@ root = true
 
 [*]
 indent_style = space
+<<<<<<< 18bf4b8c42350e113e67f3c9eec56bc929dd7cde
 indent_size = 2
+=======
+indent_size = 4
+>>>>>>> fix(editor-config): made space as default indent
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
