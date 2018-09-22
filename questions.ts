@@ -42,7 +42,7 @@ const nameQuestion: IQuestionType = {
         } else {
             return "Name is too long. Please enter a shorter name (less than 45 characters)";
         }
-    }
+    },
 };
 
 const shortNameQuestion: IQuestionType = {
@@ -57,7 +57,7 @@ const shortNameQuestion: IQuestionType = {
         } else {
             return "Short Name is too long. Please enter a shorter name (less than 12 characters)";
         }
-    }
+    },
 };
 
 const descriptionQuestion: IQuestionType = {
@@ -70,7 +70,7 @@ const homePageQuestion = {
     default: () => "index.html",
     message: "What is the name of the home page of your application?",
     name: "homePage",
-    type: "input"
+    type: "input",
 };
 
 const themeColorQuestion = {
@@ -85,7 +85,7 @@ const themeColorQuestion = {
         } else {
             return "Invalid Hex color code. A valid color looks like #de54ef or #abc";
         }
-    }
+    },
 };
 
 const faviconQuestion = {
@@ -102,7 +102,7 @@ const faviconQuestion = {
         } else {
             return "Given file doesn't exists.";
         }
-    }
+    },
 };
 
 const outputDirQuestion = {
