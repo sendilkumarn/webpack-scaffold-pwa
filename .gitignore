@@ -3,3 +3,5 @@ main/
 yarn.lock
 package-lock.json
 !tsconfig.json
+.DS_Store
+.vscode/
