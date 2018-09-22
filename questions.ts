@@ -66,14 +66,14 @@ const descriptionQuestion: IQuestionType = {
     type: "input",
 };
 
-const homePageQuestion = {
+const homePageQuestion: IQuestionType = {
     default: () => "index.html",
     message: "What is the name of the home page of your application?",
     name: "homePage",
     type: "input",
 };
 
-const themeColorQuestion = {
+const themeColorQuestion: IQuestionType = {
     default: () => "#ffffff",
     message: "Please enter the theme color of your application.",
     name: "themeColor",
@@ -88,7 +88,7 @@ const themeColorQuestion = {
     },
 };
 
-const faviconQuestion = {
+const faviconQuestion: IQuestionType = {
     message: "Enter path to your logo (in .svg or .png): ",
     name: "favPath",
     type: "input",
@@ -105,7 +105,7 @@ const faviconQuestion = {
     },
 };
 
-const outputDirQuestion = {
+const outputDirQuestion: IQuestionType = {
     default: () => "./dist",
     message: "Enter the path to directory where you would like to generate builds: ",
     name: "outputDir",
