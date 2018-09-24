@@ -1,9 +1,9 @@
-const Generator = require('yeoman-generator');
-const { Confirm, Input } = require('@webpack-cli/webpack-scaffold');
-const createDevConfig = require('./dev-config');
-const getPackageManager = require('./utils/package-manager');
-const welcomeMessage = require('./utils/welcome');
-const questions = require('./questions');
+import Generator from 'yeoman-generator';
+import { Confirm, Input } from '@webpack-cli/webpack-scaffold';
+import createDevConfig from './dev-config';
+import getPackageManager from './utils/package-manager';
+import welcomeMessage from './utils/welcome';
+import questions from './questions';
 
 module.exports = class WebpackGenerator extends Generator {
     [x: string]: any;
