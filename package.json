@@ -6,11 +6,12 @@
   "author": "Sendil Kumar",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && cp generator.js ./main/generator.js",
+    "build": "tsc",
     "lint": "eslint *.js",
     "test": "tsc && ava --verbose"
   },
   "dependencies": {
+    "@types/chalk": "^2.2.0",
     "@types/cross-spawn": "^6.0.0",
     "@webpack-cli/webpack-scaffold": "^0.1.1",
     "chalk": "^2.4.1",
@@ -20,7 +21,7 @@
   "devDependencies": {
     "@types/node": "^10.9.4",
     "@types/yeoman-generator": "^2.0.3",
-    "ava": "^1.0.0-beta.3",
+    "ava": "^1.0.0-beta.8",
     "babel-eslint": "^8.2.1",
     "eslint": "^4.18.1",
     "typescript": "^3.0.3"
