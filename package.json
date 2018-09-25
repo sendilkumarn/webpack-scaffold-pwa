@@ -6,7 +6,7 @@
   "author": "Sendil Kumar",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp ./templates/* ./main/templates/",
     "lint:js": "eslint *.js",
     "lint:ts": "tslint -c tslint.json '*.ts' './utils/*.ts'",
     "test": "tsc && ava --verbose"
