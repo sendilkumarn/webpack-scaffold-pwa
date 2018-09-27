@@ -4,7 +4,7 @@
 
 # webpack-scaffold-pwa
 
- [![CircleCI Build Status](https://circleci.com/gh/sendilkumarn/webpack-scaffold-pwa.svg?style=shield)](https://circleci.com/gh/sendilkumarn/webpack-scaffold-pwa)
+ [![CircleCI Build Status](https://circleci.com/gh/sendilkumarn/webpack-scaffold-pwa.svg?style=shield)](https://circleci.com/gh/sendilkumarn/webpack-scaffold-pwa) [![Build Status](https://dev.azure.com/sendilkumarn/webpack-scaffold-pwa/_apis/build/status/sendilkumarn.webpack-scaffold-pwa)](https://dev.azure.com/sendilkumarn/webpack-scaffold-pwa/_build/latest?definitionId=1)
 
 Webpack-cli addon for magically ✨ make your application into PWA
 
