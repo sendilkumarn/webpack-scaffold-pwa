@@ -36,10 +36,10 @@ module.exports = class WebpackGenerator extends Generator {
  public prompting(): Promise<void> {
 
   const done = this.async();
-  let serviceWorker = false;
-  let manifestDetails = {};
-  let favPath;
-  let outputDir;
+  let serviceWorker: boolean = false;
+  let manifestDetails: object = {};
+  let favPath: string;
+  let outputDir: string;
 
   this.devConfig.topScope = [
   "const webpack = require('webpack')",
@@ -134,7 +134,7 @@ module.exports = class WebpackGenerator extends Generator {
     };
     }
 
-    const config = {
+    const config: object = {
     favPath,
     manifestDetails,
     outputDir,
@@ -207,7 +207,7 @@ module.exports = class WebpackGenerator extends Generator {
 
   // Adding webpack build script to generated package.json
   const pkg = this.readJSONFile("package.json");
-  const scripts = {
+  const scripts: object = {
   "build": "webpack --mode development --config ./webpack.config.js",
   "build:prod": "webpack --mode production --config ./webpack.config.js",
   };
