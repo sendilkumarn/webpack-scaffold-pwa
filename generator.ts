@@ -6,14 +6,17 @@ import getPackageManager from "./utils/package-manager";
 import welcomeMessage from "./utils/welcome";
 
 module.exports = class WebpackGenerator extends Generator {
+
  [x: string]: any;
  public dependencies: string[];
  public devConfig: any;
  public webpackOptions: any;
  public manifestDetails: any;
+
  constructor(args, opts) {
   super(args, opts);
   this.dependencies = ["webpack"];
+
   opts.env.configuration = {
    dev: {
     manifestDetails: {},
