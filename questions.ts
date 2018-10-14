@@ -112,7 +112,7 @@ const outputDirQuestion: IQuestionType = {
     type: "input",
 };
 
-module.exports = {
+export default {
     descriptionQuestion,
     entryQuestion,
     faviconQuestion,
